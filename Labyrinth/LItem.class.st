@@ -1,5 +1,24 @@
 Class {
 	#name : #LItem,
 	#superclass : #Object,
-	#category : #Labyrinth
+	#instVars : [
+		'name'
+	],
+	#category : #'Labyrinth-Model'
 }
+
+{ #category : #accessing }
+LItem >> name [ 
+
+	^ name 
+	
+
+]
+
+{ #category : #accessing }
+LItem >> name: aString [ 
+
+	name := aString 
+	
+
+]
