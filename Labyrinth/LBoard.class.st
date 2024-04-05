@@ -167,6 +167,50 @@ LBoard >> initializeTiles [
 ]
 
 { #category : #accessing }
+LBoard >> insertAt: anIndex isVertical: verticalBoolean toTheEnd: endBoolean [
+
+	verticalBoolean ifTrue: [ 
+		self insertAtColumn: anIndex toTheEnd: endBoolean ] ifFalse: [ 
+		self insertAtRow: anIndex toTheEnd: endBoolean  ]
+]
+
+{ #category : #'as yet unclassified' }
+LBoard >> insertAtColumn: anIndex toTheEnd: endBoolean [
+	"endBoolean True means Top to Bottom"
+
+	| col |
+	col := grid columns at: anIndex.
+	
+	endBoolean
+		ifTrue: [
+			col addFirst: extraTile.
+			extraTile := col removeLast ]
+		ifFalse: [
+			col add: extraTile.
+			extraTile := col removeFirst ].
+		
+	grid atColumn: anIndex put: col
+]
+
+{ #category : #'as yet unclassified' }
+LBoard >> insertAtRow: anIndex toTheEnd: endBoolean [
+	"endBoolean True means Left to Right"
+
+	| row |
+	row := grid rows at: anIndex.
+
+	endBoolean
+		ifTrue: [
+			row addFirst: extraTile.
+			extraTile := row removeLast ]
+		ifFalse: [
+			row add: extraTile.
+			extraTile := row removeFirst ].
+		
+	grid atRow: anIndex put: row
+]
+
+{ #category : #accessing }
 LBoard >> items [ 
 
 	^ items
