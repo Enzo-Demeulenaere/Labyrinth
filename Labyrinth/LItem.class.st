@@ -8,6 +8,18 @@ Class {
 }
 
 { #category : #accessing }
+LItem class >> name: aString [ 
+
+	^ self new name: aString
+]
+
+{ #category : #accessing }
+LItem >> icon [ 
+
+	^ LRessources perform: ((name , 'Icon') asSymbol)
+]
+
+{ #category : #accessing }
 LItem >> name [ 
 
 	^ name 
@@ -16,9 +28,7 @@ LItem >> name [
 ]
 
 { #category : #accessing }
-LItem >> name: aString [ 
+LItem >> name: aString [
 
-	name := aString 
-	
-
+	name := aString
 ]

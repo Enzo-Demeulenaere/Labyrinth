@@ -3,7 +3,8 @@ Class {
 	#superclass : #MygBoard,
 	#instVars : [
 		'extraTile',
-		'cards'
+		'cards',
+		'items'
 	],
 	#category : #'Labyrinth-Model'
 }
@@ -33,16 +34,20 @@ LBoard >> extraTile: aLTile [
 ]
 
 { #category : #initialization }
-LBoard >> initialize [ 
+LBoard >> initialize [
 
 	super initialize.
-	self initializeTiles.
+	self initializeItems.
 	self initializeCards.
+	self initializeTiles.
 	
 ]
 
 { #category : #initialization }
 LBoard >> initializeCards [
+
+	cards := items collect: [ :item | LCard item: item ].
+	cards shuffle.
 ]
 
 { #category : #initialization }
@@ -73,23 +78,63 @@ LBoard >> initializeFixedTiles [
 	array := CTNewArray2D width: 7 height: 7.
 	array
 		at: 1 @ 1 put: LTile corner;
-		at: 3 @ 1 put: (LTile tShaped rotateRightTimes: 1);
-		at: 5 @ 1 put: (LTile tShaped rotateRightTimes: 1);
+		at: 3 @ 1
+		put: ((LTile tShaped rotateRightTimes: 1) item: (items at: 1));
+		at: 5 @ 1
+		put: ((LTile tShaped rotateRightTimes: 1) item: (items at: 2));
 		at: 7 @ 1 put: (LTile corner rotateRightTimes: 1);
-		at: 1 @ 3 put: LTile tShaped;
-		at: 3 @ 3 put: LTile tShaped;
-		at: 5 @ 3 put: (LTile tShaped rotateRightTimes: 1);
-		at: 7 @ 3 put: (LTile tShaped rotateRightTimes: 2);
-		at: 1 @ 5 put: LTile tShaped;
-		at: 3 @ 5 put: (LTile tShaped rotateRightTimes: 3);
-		at: 5 @ 5 put: (LTile tShaped rotateRightTimes: 2);
-		at: 7 @ 5 put: (LTile tShaped rotateRightTimes: 2);
+		at: 1 @ 3 put: (LTile tShaped item: (items at: 3));
+		at: 3 @ 3 put: (LTile tShaped item: (items at: 4));
+		at: 5 @ 3
+		put: ((LTile tShaped rotateRightTimes: 1) item: (items at: 5));
+		at: 7 @ 3
+		put: ((LTile tShaped rotateRightTimes: 2) item: (items at: 6));
+		at: 1 @ 5 put: (LTile tShaped item: (items at: 7));
+		at: 3 @ 5
+		put: ((LTile tShaped rotateRightTimes: 3) item: (items at: 8));
+		at: 5 @ 5
+		put: ((LTile tShaped rotateRightTimes: 2) item: (items at: 9));
+		at: 7 @ 5
+		put: ((LTile tShaped rotateRightTimes: 2) item: (items at: 10));
 		at: 1 @ 7 put: (LTile corner rotateRightTimes: 3);
-		at: 3 @ 7 put: (LTile tShaped rotateRightTimes: 3);
-		at: 5 @ 7 put: (LTile tShaped rotateRightTimes: 3);
+		at: 3 @ 7
+		put: ((LTile tShaped rotateRightTimes: 3) item: (items at: 11));
+		at: 5 @ 7
+		put: ((LTile tShaped rotateRightTimes: 3) item: (items at: 12));
 		at: 7 @ 7 put: (LTile corner rotateRightTimes: 2).
 
 	self grid: array
+]
+
+{ #category : #initialization }
+LBoard >> initializeItems [
+
+	items := OrderedCollection new.
+	items addAll: {
+			LItem name: 'bird'.
+			(LItem name: 'chandelier').
+			(LItem name: 'cat').
+			(LItem name: 'chest').
+			(LItem name: 'crown').
+			(LItem name: 'crystalBall').
+			(LItem name: 'diamond').
+			(LItem name: 'dino').
+			(LItem name: 'dreamCatcher').
+			(LItem name: 'egg').
+			(LItem name: 'fossil').
+			(LItem name: 'nameol').
+			(LItem name: 'key').
+			(LItem name: 'money').
+			(LItem name: 'mouse').
+			(LItem name: 'necklace').
+			(LItem name: 'parchment').
+			(LItem name: 'potion').
+			(LItem name: 'ring').
+			(LItem name: 'scarab').
+			(LItem name: 'skull').
+			(LItem name: 'snake').
+			(LItem name: 'vase').
+			(LItem name: 'viking') }
 ]
 
 { #category : #initialization }
@@ -98,12 +143,20 @@ LBoard >> initializeRemainingTiles [
 
 	| tiles |
 	tiles := OrderedCollection new.
-	1 to: 16 do: [ :i | tiles add: LTile corner randomRotate ].
-	1 to: 12 do: [ :i | tiles add: LTile straight randomRotate ].
-	1 to: 14 do: [ :i | tiles add: LTile tShaped randomRotate ].
+	1 to: 12 do: [ :i | tiles add: LTile straight randomRotate ]. "12 total, 0 definitive"
+	1 to: 6 do: [ :i | tiles add: LTile tShaped randomRotate ]. "18 total, 12 definitive"
+	1 to: 16 do: [ :i | tiles add: LTile corner randomRotate ]. "20 corners total, 4 definitive"
+
+	13 to: 24 do: [ :i | (tiles at: i) item: (items at: i) ].
+	"This adds 6 items to the last 6 tShaped and the 6 last items the 6 corners"
+	"We start at i = 13 because the first 12 items were assigned in the 'initializeFixedTiles' method"
+	"Now each item is correctly assigned to a tile, they can be shuffled to be placed"
 	tiles shuffle.
-	
-	self grid withIndexesDo: [ :col :row :each | each ifNil: [ self grid at: col@row put: tiles removeLast ] ].
+
+	self grid withIndexesDo: [ :col :row :each |
+		each ifNil: [ self grid at: col @ row put: tiles removeLast ] ].
+
+	self extraTile: tiles first
 ]
 
 { #category : #initialization }
@@ -111,4 +164,10 @@ LBoard >> initializeTiles [
 
 	self initializeFixedTiles.
 	self initializeRemainingTiles
+]
+
+{ #category : #accessing }
+LBoard >> items [ 
+
+	^ items
 ]

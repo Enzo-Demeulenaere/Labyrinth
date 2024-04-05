@@ -8,6 +8,12 @@ Class {
 }
 
 { #category : #accessing }
+LCard class >> item: aLItem [ 
+
+	^ self new item: aLItem 
+]
+
+{ #category : #accessing }
 LCard >> item [ 
 
 	^ item
