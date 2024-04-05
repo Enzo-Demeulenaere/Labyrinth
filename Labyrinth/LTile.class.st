@@ -27,6 +27,25 @@ LTile class >> corner [
 	^ self basicNew directions: dict
 ]
 
+{ #category : #'as yet unclassified' }
+LTile class >> cornerPath [
+	| w h shape |
+	w := 100.
+h := 100.
+shape := BlElement new
+size:w@h ;
+background: (BlBackground paint: (Color blue alpha: 0.2));
+border: (BlBorder paint: Color black width: 2);
+geometry: (BlPolygonGeometry vertices: {
+                            (w/4 @ (h/4)).
+                            (w @ (h/4)).
+                            (w @ (h/4*3)) .
+                            (w/4*3 @ (h/4*3)) .
+                            (w/4*3 @ h).
+									(w/4 @ h)}).
+^ shape
+]
+
 { #category : #'class initialization' }
 LTile class >> initialize [
 
@@ -59,6 +78,24 @@ LTile class >> straight [
 ]
 
 { #category : #'as yet unclassified' }
+LTile class >> straightPath [
+	| w h shape |
+	w := 100.
+h := 100.
+shape := BlElement new
+size:w@h ;
+background: (BlBackground paint: (Color blue alpha: 0.2));
+border: (BlBorder paint: Color black width: 2);
+geometry: (BlPolygonGeometry vertices: {
+                            (w/4 @ 0).
+                            (w/4*3 @ 0).
+                            (w/4*3 @ h) .
+                            (w/4 @ h).}).
+
+^ shape
+]
+
+{ #category : #'as yet unclassified' }
 LTile class >> tShaped [
 	"18,  tShaped are 'facing' east by default"
 
@@ -71,6 +108,29 @@ LTile class >> tShaped [
 		        yourself.
 
 	^ self basicNew directions: dict
+]
+
+{ #category : #'as yet unclassified' }
+LTile class >> tShapedPath [ 
+
+| w h shape |
+w := 100.
+h := 100.
+shape := BlElement new
+size:w@h ;
+background: (BlBackground paint: (Color blue alpha: 0.2));
+border: (BlBorder paint: Color black width: 2);
+geometry: (BlPolygonGeometry vertices: {
+                            (w/4 @ 0).
+                            (w/4*3 @ 0).
+                            (w/4*3 @ (h/4)).
+                            (w @ (h/4)).
+                            (w @ (h/4*3)) .
+                            (w/4*3 @ (h/4*3)) .
+                            (w/4*3 @ h) .
+                            (w/4 @ h).}).
+
+^ shape
 ]
 
 { #category : #accessing }
