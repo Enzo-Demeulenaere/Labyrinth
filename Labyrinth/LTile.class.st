@@ -29,21 +29,23 @@ LTile class >> corner [
 
 { #category : #'as yet unclassified' }
 LTile class >> cornerPath [
+
 	| w h shape |
 	w := 100.
-h := 100.
-shape := BlElement new
-size:w@h ;
-background: (BlBackground paint: (Color blue alpha: 0.2));
-border: (BlBorder paint: Color black width: 2);
-geometry: (BlPolygonGeometry vertices: {
-                            (w/4 @ (h/4)).
-                            (w @ (h/4)).
-                            (w @ (h/4*3)) .
-                            (w/4*3 @ (h/4*3)) .
-                            (w/4*3 @ h).
-									(w/4 @ h)}).
-^ shape
+	h := 100.
+	shape := BlElement new
+		         size: w @ h;
+		         background:
+					          (Color fromRgbTriplet: { 247. 244. 223 } / 256);
+		         border: (BlBorder paint: Color gray width: 2);
+		         geometry: (BlPolygonGeometry vertices: {
+						          (w / 4 @ (h / 4)).
+						          (w @ (h / 4)).
+						          (w @ (h / 4 * 3)).
+						          (w / 4 * 3 @ (h / 4 * 3)).
+						          (w / 4 * 3 @ h).
+						          (w / 4 @ h) }).
+	^ shape
 ]
 
 { #category : #'class initialization' }
@@ -79,20 +81,22 @@ LTile class >> straight [
 
 { #category : #'as yet unclassified' }
 LTile class >> straightPath [
+
 	| w h shape |
 	w := 100.
-h := 100.
-shape := BlElement new
-size:w@h ;
-background: (BlBackground paint: (Color blue alpha: 0.2));
-border: (BlBorder paint: Color black width: 2);
-geometry: (BlPolygonGeometry vertices: {
-                            (w/4 @ 0).
-                            (w/4*3 @ 0).
-                            (w/4*3 @ h) .
-                            (w/4 @ h).}).
+	h := 100.
+	shape := BlElement new
+		         size: w @ h;
+		         background:
+					          (Color fromRgbTriplet: { 247. 244. 223 } / 256);
+		         border: (BlBorder paint: Color black width: 2);
+		         geometry: (BlPolygonGeometry vertices: {
+						          (w / 4 @ 0).
+						          (w / 4 * 3 @ 0).
+						          (w / 4 * 3 @ h).
+						          (w / 4 @ h) }).
 
-^ shape
+	^ shape
 ]
 
 { #category : #'as yet unclassified' }
@@ -111,26 +115,27 @@ LTile class >> tShaped [
 ]
 
 { #category : #'as yet unclassified' }
-LTile class >> tShapedPath [ 
+LTile class >> tShapedPath [
 
-| w h shape |
-w := 100.
-h := 100.
-shape := BlElement new
-size:w@h ;
-background: (BlBackground paint: (Color blue alpha: 0.2));
-border: (BlBorder paint: Color black width: 2);
-geometry: (BlPolygonGeometry vertices: {
-                            (w/4 @ 0).
-                            (w/4*3 @ 0).
-                            (w/4*3 @ (h/4)).
-                            (w @ (h/4)).
-                            (w @ (h/4*3)) .
-                            (w/4*3 @ (h/4*3)) .
-                            (w/4*3 @ h) .
-                            (w/4 @ h).}).
+	| w h shape |
+	w := 100.
+	h := 100.
+	shape := BlElement new
+		         size: w @ h;
+		         background:
+					          (Color fromRgbTriplet: { 247. 244. 223 } / 256);
+		         border: (BlBorder paint: Color black width: 2);
+		         geometry: (BlPolygonGeometry vertices: {
+						          (w / 4 @ 0).
+						          (w / 4 * 3 @ 0).
+						          (w / 4 * 3 @ (h / 4)).
+						          (w @ (h / 4)).
+						          (w @ (h / 4 * 3)).
+						          (w / 4 * 3 @ (h / 4 * 3)).
+						          (w / 4 * 3 @ h).
+						          (w / 4 @ h) }).
 
-^ shape
+	^ shape
 ]
 
 { #category : #accessing }
