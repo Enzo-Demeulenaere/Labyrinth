@@ -61,7 +61,7 @@ LTile class >> initialize [
 		                  (11 -> 'TN').
 		                  (12 -> 'CS').
 		                  (13 -> 'TW').
-		                  (14 -> 'TS'). } asDictionary
+		                  (14 -> 'TS') } asDictionary.
 ]
 
 { #category : #'as yet unclassified' }

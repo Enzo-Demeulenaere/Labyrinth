@@ -21,6 +21,14 @@ LBoard >> cards: aCollection [
 	cards := aCollection 
 ]
 
+{ #category : #enumerating }
+LBoard >> do: aBlock [ 
+
+	grid do: aBlock 
+
+	
+]
+
 { #category : #accessing }
 LBoard >> extraTile [ 
 
