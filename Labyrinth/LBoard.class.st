@@ -164,14 +164,16 @@ LBoard >> initializeRemainingTiles [
 	self grid withIndexesDo: [ :col :row :each |
 		each ifNil: [ self grid at: col @ row put: tiles removeLast ] ].
 
-	self extraTile: tiles first
+	self extraTile: tiles first.
+	self extraTile board: self
 ]
 
 { #category : #initialization }
 LBoard >> initializeTiles [
 
 	self initializeFixedTiles.
-	self initializeRemainingTiles
+	self initializeRemainingTiles.
+	self configureGrid: self grid.
 ]
 
 { #category : #accessing }
