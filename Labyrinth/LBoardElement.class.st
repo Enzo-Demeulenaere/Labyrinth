@@ -9,6 +9,28 @@ Class {
 	#category : #'Labyrinth-UI'
 }
 
+{ #category : #'as yet unclassified' }
+LBoardElement class >> arrowForm [ 
+
+	| w h shape |
+	w := 100.
+h := 100.
+shape := BlElement new
+		         size: w @ h;
+		         background: Color lightGreen ;
+		         border: (BlBorder paint: Color gray width: 2);
+		         geometry: (BlPolygonGeometry vertices: {
+						          (w / 3 @ 0).
+						          (w * 2/3 @ 0).
+						          (w * 2/3 @ (h /2)).
+						          (w  @ (h /2)).
+						          (w / 2 @ h).
+						          (0 @ (h/2)).
+									(w /3 @ (h/2) )}).
+									
+	^ shape asForm
+]
+
 { #category : #'instance creation' }
 LBoardElement class >> open [
 
@@ -25,7 +47,27 @@ LBoardElement class >> open [
 { #category : #'as yet unclassified' }
 LBoardElement >> arrowVertical: directionBoolean at: aNumber toTheEnd: endBoolean [
 
-	^ BlElement new background: Color lightGreen; size: 100 asPoint; addEventHandlerOn: BlClickEvent  do: [ self board insertAt: aNumber isVertical: directionBoolean toTheEnd: endBoolean ]
+	| arrow form |
+	form := self class arrowForm.
+	"rotate form"
+	directionBoolean
+		ifTrue: [
+			endBoolean ifFalse: [
+				form := form rotateBy: #pi centerAt: 50 asPoint ] ]
+		ifFalse: [
+			form := endBoolean
+				        ifTrue: [ form rotateBy: #left centerAt: 50 asPoint ]
+				        ifFalse: [ form rotateBy: #right centerAt: 50 asPoint ] ].
+	arrow := BlElement new
+		         size: 100 asPoint;
+		         background: form;
+		         addEventHandlerOn: BlClickEvent do: [
+			         self board
+				         insertAt: aNumber
+				         isVertical: directionBoolean
+				         toTheEnd: endBoolean ].
+
+	^ arrow
 ]
 
 { #category : #accessing }
@@ -39,7 +81,7 @@ LBoardElement >> board: aLBoard [
 
 	board := aLBoard.
 	self initializeTiles.
-	"self initializeExtraTile."
+	self initializeExtraTile.
 	self initializeBoardArrows.
 	self initializeCards
 ]
@@ -134,32 +176,31 @@ LBoardElement >> initializeCards [
 LBoardElement >> initializeExtraTile [
 
 	| extra rotateLeft rotateRight extraContainer |
-	extraContainer := BlElement new
+	"extraContainer := BlElement new
 		                  layout: BlFrameLayout new;
 		                  constraintsDo: [ :c |
 			                  c horizontal matchParent.
-			                  c vertical matchParent ].
-
+			                  c vertical matchParent ]."
 	extra := LTileElement tile: board extraTile.
-	extra constraintsDo: [ :c |
+	"extra constraintsDo: [ :c |
 		c frame horizontal alignRightAt: 0.3.
-		c frame vertical alignCenter ].
-	extraContainer addChild: extra.
-	"extra position: 800 @ 300."
-	self addChild: extraContainer.
+		c frame vertical alignCenter ]."
+	"extraContainer addChild: extra."
+	extra position: 1100 @ 400.
+	self addChild: extra.
 
 	rotateLeft := BlTextElement new
-		              size: 50 @ 20;
+		              size: 40 @ 20;
 		              background: Color veryLightGray;
 		              border: (BlBorder paint: Color black width: 1);
 		              text: 'Rotate left' asRopedText;
-		              position: 800 @ 410.
+		              position: 1100 @ 510.
 	rotateRight := BlTextElement new
-		               size: 50 @ 20;
+		               size: 40 @ 20;
 		               background: Color veryLightGray;
 		               border: (BlBorder paint: Color black width: 1);
 		               text: 'Rotate right' asRopedText;
-		               position: 850 @ 410.
+		               position: 1150 @ 510.
 
 	rotateLeft addEventHandlerOn: BlClickEvent do: [ extra rotateLeft ].
 	rotateRight addEventHandlerOn: BlClickEvent do: [ extra rotateRight ].
