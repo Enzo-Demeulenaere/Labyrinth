@@ -189,8 +189,8 @@ LBoard >> insertAtColumn: anIndex toTheEnd: endBoolean [
 	"endBoolean True means Top to Bottom"
 
 	| col |
-	col := grid columns at: anIndex.
-	
+	col := (grid columns at: anIndex) asOrderedCollection.
+
 	endBoolean
 		ifTrue: [
 			col addFirst: extraTile.
@@ -198,8 +198,9 @@ LBoard >> insertAtColumn: anIndex toTheEnd: endBoolean [
 		ifFalse: [
 			col add: extraTile.
 			extraTile := col removeFirst ].
-		
-	grid atColumn: anIndex put: col
+
+	grid atColumn: anIndex put: col.
+	grid inspect.
 ]
 
 { #category : #'as yet unclassified' }
@@ -207,7 +208,7 @@ LBoard >> insertAtRow: anIndex toTheEnd: endBoolean [
 	"endBoolean True means Left to Right"
 
 	| row |
-	row := grid rows at: anIndex.
+	row := (grid rows at: anIndex) asOrderedCollection .
 
 	endBoolean
 		ifTrue: [
@@ -216,7 +217,7 @@ LBoard >> insertAtRow: anIndex toTheEnd: endBoolean [
 		ifFalse: [
 			row add: extraTile.
 			extraTile := row removeFirst ].
-		
+
 	grid atRow: anIndex put: row
 ]
 
