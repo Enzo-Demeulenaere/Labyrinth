@@ -43,6 +43,10 @@ LBoardElement class >> open [
 	space root addChild: elt.
 	space root clipChildren: false.
 
+	"elt tiles children first tile tagAccessibleNeighbors.
+	elt tiles children do: [ :e | e updateBackgroundRepresentation ]."
+
+
 	space show
 ]
 
@@ -237,6 +241,12 @@ LBoardElement >> initializeTiles [
 		elt := LTileElement tile: aTile.
 		elt boardPosition: aTile position.
 		tiles addChild: elt ]
+]
+
+{ #category : #accessing }
+LBoardElement >> tiles [ 
+
+	^ tiles
 ]
 
 { #category : #'as yet unclassified' }

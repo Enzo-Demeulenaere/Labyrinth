@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'item',
 		'players',
-		'directions'
+		'directions',
+		'accessible'
 	],
 	#classVars : [
 		'Configurations'
@@ -21,10 +22,10 @@ LTile class >> corner [
 		        at: CpNorthDirection put: false;
 		        at: CpEastDirection put: true;
 		        at: CpSouthDirection put: true;
-		        at: CpWestDirection  put: false;
+		        at: CpWestDirection put: false;
 		        yourself.
 
-	^ self basicNew directions: dict
+	^ self new directions: dict
 ]
 
 { #category : #'as yet unclassified' }
@@ -73,10 +74,10 @@ LTile class >> straight [
 		        at: CpNorthDirection put: true;
 		        at: CpEastDirection put: false;
 		        at: CpSouthDirection put: true;
-		        at: CpWestDirection  put: false;
+		        at: CpWestDirection put: false;
 		        yourself.
 
-	^ self basicNew directions: dict
+	^ self new directions: dict
 ]
 
 { #category : #'as yet unclassified' }
@@ -108,10 +109,10 @@ LTile class >> tShaped [
 		        at: CpNorthDirection put: true;
 		        at: CpEastDirection put: true;
 		        at: CpSouthDirection put: true;
-		        at: CpWestDirection  put: false;
+		        at: CpWestDirection put: false;
 		        yourself.
 
-	^ self basicNew directions: dict
+	^ self new directions: dict
 ]
 
 { #category : #'as yet unclassified' }
@@ -136,6 +137,12 @@ LTile class >> tShapedPath [
 						          (w / 4 @ h) }).
 
 	^ shape
+]
+
+{ #category : #testing }
+LTile >> accessible: aBoolean [
+
+	accessible := aBoolean.
 ]
 
 { #category : #accessing }
@@ -167,6 +174,19 @@ LTile >> directions [
 LTile >> directions: aDictionary [
 
 	directions := aDictionary 
+]
+
+{ #category : #initialization }
+LTile >> initialize [ 
+
+	super initialize.
+	accessible := false.
+]
+
+{ #category : #testing }
+LTile >> isAccessible [ 
+	
+	^ accessible 
 ]
 
 { #category : #accessing }
@@ -252,4 +272,40 @@ LTile >> rotateRightTimes: aNumber [
 	aNumber = 0 ifTrue: [ ^ self ].
 	self rotateRight.
 	self rotateRightTimes: aNumber -1
+]
+
+{ #category : #'as yet unclassified' }
+LTile >> tagAccessibleNeighbors [
+
+	| neighbor |
+	self isAccessible ifTrue: [ ^ self ].
+	self accessible: true.
+	"north neighbor"
+	(self position y > 1 and: [ self directions at: CpNorthDirection ])
+		ifTrue: [
+			neighbor := self board grid at:
+				            self position x @ (self position y - 1).
+			(neighbor directions at: CpSouthDirection) ifTrue: [
+				neighbor tagAccessibleNeighbors ] ].
+	"east neighbor"
+	(self position x < 7 and: [ self directions at: CpEastDirection ])
+		ifTrue: [
+			neighbor := self board grid at:
+				            self position x + 1 @ self position y.
+			(neighbor directions at: CpWestDirection) ifTrue: [
+				neighbor tagAccessibleNeighbors ] ].
+	"south neighbor"
+	(self position y < 7 and: [ self directions at: CpSouthDirection ])
+		ifTrue: [
+			neighbor := self board grid at:
+				            self position x @ (self position y + 1).
+			(neighbor directions at: CpNorthDirection) ifTrue: [
+				neighbor tagAccessibleNeighbors ] ].
+	"west neighbor"
+	(self position x > 1 and: [ self directions at: CpWestDirection ])
+		ifTrue: [
+			neighbor := self board grid at:
+				            self position x - 1 @ self position y.
+			(neighbor directions at: CpEastDirection) ifTrue: [
+				neighbor tagAccessibleNeighbors ] ]
 ]

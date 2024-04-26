@@ -4,10 +4,17 @@ Class {
 	#instVars : [
 		'extraTile',
 		'cards',
-		'items'
+		'items',
+		'players'
 	],
 	#category : #'Labyrinth-Model'
 }
+
+{ #category : #adding }
+LBoard >> addPlayer: aLPlayer [ 
+
+	players add: aLPlayer 
+]
 
 { #category : #accessing }
 LBoard >> cards [ 
@@ -45,10 +52,10 @@ LBoard >> extraTile: aLTile [
 LBoard >> initialize [
 
 	super initialize.
+	players := Set new.
 	self initializeItems.
 	self initializeCards.
-	self initializeTiles.
-	
+	self initializeTiles
 ]
 
 { #category : #initialization }
@@ -224,4 +231,24 @@ LBoard >> insertAtRow: anIndex toTheEnd: endBoolean [
 LBoard >> items [ 
 
 	^ items
+]
+
+{ #category : #'as yet unclassified' }
+LBoard >> mapAccessibleTilesForPlayer: aLPlayer [
+
+	| initialTile |
+	initialTile := aLPlayer tile.
+	initialTile tagAccessibleNeighbors
+]
+
+{ #category : #accessing }
+LBoard >> players [ 
+
+	^ players
+]
+
+{ #category : #accessing }
+LBoard >> players: aSet [
+
+	players := aSet
 ]

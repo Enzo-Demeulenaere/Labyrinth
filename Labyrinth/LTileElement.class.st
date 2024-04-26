@@ -220,6 +220,8 @@ LTileElement >> updateBackgroundRepresentation [
 		itemElt := (item icon scaledIntoFormOfSize: 40 asPoint) asElement.
 		itemElt position: 30 asPoint.
 		formElt addChild: itemElt ].
+	self flag: #debug.
+	tile isAccessible ifTrue: [ formElt addChild: (BlElement new size: 100 asPoint; background: (Color lightGreen alpha: 0.2) )].
 	form := formElt asForm.
 
 	self background: form
