@@ -119,7 +119,7 @@ LBoard >> initializeItems [
 
 	items := OrderedCollection new.
 	items addAll: {
-			LItem name: 'bird'.
+			(LItem name: 'bird').
 			(LItem name: 'chandelier').
 			(LItem name: 'cat').
 			(LItem name: 'chest').
@@ -130,7 +130,7 @@ LBoard >> initializeItems [
 			(LItem name: 'dreamCatcher').
 			(LItem name: 'egg').
 			(LItem name: 'fossil').
-			(LItem name: 'nameol').
+			(LItem name: 'idol').
 			(LItem name: 'key').
 			(LItem name: 'money').
 			(LItem name: 'mouse').

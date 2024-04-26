@@ -164,13 +164,9 @@ LTileElement >> initialize [
 
 { #category : #'as yet unclassified' }
 LTileElement >> rotateLeft [
-	"careful to rotate the background form and not the element"
 
-	| form |
-	form := self background image.
-	form := form rotateBy: #left centerAt: 50 asPoint.
-	self background: form.
 	self tile rotateLeft.
+	self updateBackgroundRepresentation
 ]
 
 { #category : #'as yet unclassified' }
@@ -183,13 +179,9 @@ LTileElement >> rotateLeftTimes: aNumber [
 
 { #category : #'as yet unclassified' }
 LTileElement >> rotateRight [
-	"careful to rotate the background form and not the element"
 
-	| form |
-	form := self background image.
-	form := form rotateBy: #right centerAt: 50 asPoint.
-	self background: form.
 	self tile rotateRight.
+	self updateBackgroundRepresentation 
 ]
 
 { #category : #'as yet unclassified' }
@@ -223,6 +215,12 @@ LTileElement >> updateBackgroundRepresentation [
 	config := tile configuration.
 	path := self elementForConfig: config.
 	formElt addChild: path.
+	tile item ifNotNil: [ :item |
+		| itemElt |
+		itemElt := (item icon scaledIntoFormOfSize: 40 asPoint) asElement.
+		itemElt position: 30 asPoint.
+		formElt addChild: itemElt ].
 	form := formElt asForm.
+
 	self background: form
 ]

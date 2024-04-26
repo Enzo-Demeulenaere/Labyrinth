@@ -39,8 +39,9 @@ LBoardElement class >> open [
 	| elt space |
 	elt := self new board: LBoard new.
 
-	space := BlSpace new extent: 2000 @ 1000.
+	space := BlSpace new extent: 1500 @ 1000.
 	space root addChild: elt.
+	space root clipChildren: false.
 
 	space show
 ]
@@ -189,35 +190,32 @@ LBoardElement >> initializeCards [
 { #category : #initialization }
 LBoardElement >> initializeExtraTile [
 
-	| extra rotateLeft rotateRight extraContainer |
-	"extraContainer := BlElement new
-		                  layout: BlFrameLayout new;
-		                  constraintsDo: [ :c |
-			                  c horizontal matchParent.
-			                  c vertical matchParent ]."
+	| rotateLeft rotateRight |
 	extraTileElement := LTileElement tile: board extraTile.
-	"extra constraintsDo: [ :c |
-		c frame horizontal alignRightAt: 0.3.
-		c frame vertical alignCenter ]."
-	"extraContainer addChild: extra."
-	extraTileElement position: 1100 @ 400.
+
+	extraTileElement position: 900 @ 0.
 	self addChild: extraTileElement.
+
 
 	rotateLeft := BlTextElement new
 		              size: 40 @ 20;
 		              background: Color veryLightGray;
 		              border: (BlBorder paint: Color black width: 1);
 		              text: 'Rotate left' asRopedText;
-		              position: 1100 @ 510.
+		              position: 900 @ 105.
 	rotateRight := BlTextElement new
 		               size: 40 @ 20;
 		               background: Color veryLightGray;
 		               border: (BlBorder paint: Color black width: 1);
 		               text: 'Rotate right' asRopedText;
-		               position: 1150 @ 510.
+		               position: 950 @ 105.
 
-	rotateLeft addEventHandlerOn: BlClickEvent do: [ extraTileElement rotateLeft ].
-	rotateRight addEventHandlerOn: BlClickEvent do: [ extraTileElement rotateRight ].
+	rotateLeft
+		addEventHandlerOn: BlClickEvent
+		do: [ extraTileElement rotateLeft ].
+	rotateRight
+		addEventHandlerOn: BlClickEvent
+		do: [ extraTileElement rotateRight ].
 
 	self addChild: rotateLeft.
 	self addChild: rotateRight
