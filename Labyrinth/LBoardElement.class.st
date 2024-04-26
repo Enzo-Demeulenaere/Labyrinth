@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'board',
 		'arrows',
-		'tiles'
+		'tiles',
+		'extraTileElement'
 	],
 	#category : #'Labyrinth-UI'
 }
@@ -65,7 +66,8 @@ LBoardElement >> arrowVertical: directionBoolean at: aNumber toTheEnd: endBoolea
 			         self board
 				         insertAt: aNumber
 				         isVertical: directionBoolean
-				         toTheEnd: endBoolean ].
+				         toTheEnd: endBoolean.
+			         self updateLineVertical: directionBoolean at: aNumber toTheEnd: endBoolean ].
 
 	^ arrow
 ]
@@ -84,6 +86,18 @@ LBoardElement >> board: aLBoard [
 	self initializeExtraTile.
 	self initializeBoardArrows.
 	self initializeCards
+]
+
+{ #category : #accessing }
+LBoardElement >> extraTileElement [ 
+
+	^ extraTileElement 
+]
+
+{ #category : #accessing }
+LBoardElement >> extraTileElement: aLTile [
+
+	extraTileElement := aLTile
 ]
 
 { #category : #'as yet unclassified' }
@@ -181,13 +195,13 @@ LBoardElement >> initializeExtraTile [
 		                  constraintsDo: [ :c |
 			                  c horizontal matchParent.
 			                  c vertical matchParent ]."
-	extra := LTileElement tile: board extraTile.
+	extraTileElement := LTileElement tile: board extraTile.
 	"extra constraintsDo: [ :c |
 		c frame horizontal alignRightAt: 0.3.
 		c frame vertical alignCenter ]."
 	"extraContainer addChild: extra."
-	extra position: 1100 @ 400.
-	self addChild: extra.
+	extraTileElement position: 1100 @ 400.
+	self addChild: extraTileElement.
 
 	rotateLeft := BlTextElement new
 		              size: 40 @ 20;
@@ -202,8 +216,8 @@ LBoardElement >> initializeExtraTile [
 		               text: 'Rotate right' asRopedText;
 		               position: 1150 @ 510.
 
-	rotateLeft addEventHandlerOn: BlClickEvent do: [ extra rotateLeft ].
-	rotateRight addEventHandlerOn: BlClickEvent do: [ extra rotateRight ].
+	rotateLeft addEventHandlerOn: BlClickEvent do: [ extraTileElement rotateLeft ].
+	rotateRight addEventHandlerOn: BlClickEvent do: [ extraTileElement rotateRight ].
 
 	self addChild: rotateLeft.
 	self addChild: rotateRight
@@ -219,10 +233,43 @@ LBoardElement >> initializeTiles [
 			         c horizontal fitContent.
 			         c vertical fitContent.
 			         c grid horizontal span: 7.
-						c grid vertical span: 7 ].
-
+			         c grid vertical span: 7 ].
 	self board do: [ :aTile |
 		| elt |
 		elt := LTileElement tile: aTile.
+		elt boardPosition: aTile position.
 		tiles addChild: elt ]
+]
+
+{ #category : #'as yet unclassified' }
+LBoardElement >> translateLine: anOrderedCollection [
+
+	| line extraTile |
+	line := anOrderedCollection.
+	extraTile := extraTileElement tile.
+	extraTileElement tile: line last tile.
+	
+	line size to: 2 by: -1 do: [ :i |
+		|tileElt prevTileElt|
+		tileElt := line at: i.
+		prevTileElt := line at: i-1.
+		tileElt tile: prevTileElt tile ].
+	(line at: 1) tile: extraTile.
+]
+
+{ #category : #'as yet unclassified' }
+LBoardElement >> updateLineVertical: directionBoolean at: aNumber toTheEnd: endBoolean [
+
+	directionBoolean
+		ifTrue: [
+			| column |
+			column := tiles children select: [ :e |
+				          e boardPosition x = aNumber ].
+			endBoolean ifFalse: [ column := column reverse ].
+			self translateLine: column ]
+		ifFalse: [
+			| row |
+			row := tiles children select: [ :e | e boardPosition y = aNumber ].
+			endBoolean ifFalse: [ row := row reverse ].
+			self translateLine: row ]
 ]

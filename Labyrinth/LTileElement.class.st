@@ -2,7 +2,8 @@ Class {
 	#name : #LTileElement,
 	#superclass : #BlElement,
 	#instVars : [
-		'tile'
+		'tile',
+		'boardPosition'
 	],
 	#category : #'Labyrinth-UI'
 }
@@ -131,9 +132,21 @@ LTileElement class >> TW [
 ]
 
 { #category : #'as yet unclassified' }
-LTileElement class >> tile: aLTile [ 
+LTileElement class >> tile: aLTile [
 
-	^ self new tile: aLTile 
+	^ self new  boardPosition: aLTile position; tile: aLTile
+]
+
+{ #category : #accessing }
+LTileElement >> boardPosition [ 
+
+	^ boardPosition
+]
+
+{ #category : #accessing }
+LTileElement >> boardPosition: aPoint [
+
+	boardPosition := aPoint
 ]
 
 { #category : #'as yet unclassified' }
@@ -197,6 +210,7 @@ LTileElement >> tile [
 LTileElement >> tile: aLTile [
 
 	tile := aLTile.
+	tile position: self boardPosition.
 	self updateBackgroundRepresentation
 ]
 

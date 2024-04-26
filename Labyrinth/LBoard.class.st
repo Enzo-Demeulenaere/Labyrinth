@@ -200,7 +200,6 @@ LBoard >> insertAtColumn: anIndex toTheEnd: endBoolean [
 			extraTile := col removeFirst ].
 
 	grid atColumn: anIndex put: col.
-	grid inspect.
 ]
 
 { #category : #'as yet unclassified' }
