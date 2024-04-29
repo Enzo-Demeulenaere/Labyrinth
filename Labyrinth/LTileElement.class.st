@@ -156,10 +156,22 @@ LTileElement >> elementForConfig: config [
 ]
 
 { #category : #'as yet unclassified' }
-LTileElement >> initialize [ 
+LTileElement >> initialize [
 
 	super initialize.
-	self size: 100 asPoint
+	self size: 100 asPoint.
+	self addEventHandlerOn: BlClickEvent do: [ :anEvent |
+		anEvent
+			ifPrimary: [  ]
+			secondary: [
+				self tile isAccessible
+					ifTrue: [ self tile board do: [ :t | t accessible: false ] ]
+					ifFalse: [
+						self tile board do: [ :t | t accessible: false ].
+						self tile tagAccessibleNeighbors ].
+				self parent children do: [ :t | t updateBackgroundRepresentation ] ]
+			middle: [  ]
+			other: [  ] ]
 ]
 
 { #category : #'as yet unclassified' }
@@ -221,7 +233,10 @@ LTileElement >> updateBackgroundRepresentation [
 		itemElt position: 30 asPoint.
 		formElt addChild: itemElt ].
 	self flag: #debug.
-	tile isAccessible ifTrue: [ formElt addChild: (BlElement new size: 100 asPoint; background: (Color lightGreen alpha: 0.2) )].
+	tile isAccessible ifTrue: [
+		formElt addChild: (BlElement new
+				 size: 100 asPoint;
+				 background: (Color lightGreen alpha: 0.2)) ].
 	form := formElt asForm.
 
 	self background: form

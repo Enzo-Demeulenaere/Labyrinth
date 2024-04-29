@@ -4,7 +4,7 @@ Class {
 	#classVars : [
 		'icons'
 	],
-	#category : #'Labyrinth-Model'
+	#category : #'Labyrinth-UI'
 }
 
 { #category : #'accessing - icons' }
