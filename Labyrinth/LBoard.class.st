@@ -263,12 +263,12 @@ LBoard >> mapAccessibleTilesForPlayer: aLPlayer [
 LBoard >> movePlayerTo: aLTile [
 
 	| player |
+	aLTile isAccessible ifFalse: [ ^ self ].
 	player := self game activePlayer.
 	player tile removePlayer: player.
 	player tile: aLTile.
 	player checkItem.
-	self grid do: [ :e |
-		e removeEventHandlers.
+	(self grid select: [ :e | e isAccessible ]) do: [ :e |
 		e accessible: false ].
-	self boardElement tiles do: [ :e | e updateBackgroundRepresentation ]
+	self game nextPlayer
 ]

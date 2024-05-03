@@ -5,7 +5,8 @@ Class {
 		'item',
 		'players',
 		'directions',
-		'accessible'
+		'accessible',
+		'tileElement'
 	],
 	#classVars : [
 		'Configurations'
@@ -143,6 +144,7 @@ LTile class >> tShapedPath [
 LTile >> accessible: aBoolean [
 
 	accessible := aBoolean.
+	self tileElement updateBackgroundRepresentation.
 ]
 
 { #category : #adding }
@@ -290,9 +292,15 @@ LTile >> rotateRightTimes: aNumber [
 { #category : #'as yet unclassified' }
 LTile >> tagAccessibleNeighbors [
 
-	| neighbor |
 	self isAccessible ifTrue: [ ^ self ].
 	self accessible: true.
+	self tagNeighbors
+]
+
+{ #category : #'as yet unclassified' }
+LTile >> tagNeighbors [
+
+	| neighbor |
 	"north neighbor"
 	(self position y > 1 and: [ self directions at: CpNorthDirection ])
 		ifTrue: [
@@ -321,4 +329,16 @@ LTile >> tagAccessibleNeighbors [
 				            self position x - 1 @ self position y.
 			(neighbor directions at: CpEastDirection) ifTrue: [
 				neighbor tagAccessibleNeighbors ] ]
+]
+
+{ #category : #accessing }
+LTile >> tileElement [ 
+
+	^ tileElement
+]
+
+{ #category : #accessing }
+LTile >> tileElement: aLTileElement [
+
+	tileElement := aLTileElement 
 ]

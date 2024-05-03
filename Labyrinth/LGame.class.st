@@ -11,6 +11,29 @@ Class {
 	#category : #'Labyrinth-Model'
 }
 
+{ #category : #'instance creation' }
+LGame class >> open [
+
+	<script>
+	| game elt board space |
+	board := LBoard new.
+	elt := LBoardElement new board: board.
+	game := self new boardElement: elt.
+	game board: board.
+
+	game prepareGame.
+
+	space := BlSpace new extent: 1500 @ 1000.
+	space root addChild: elt.
+	space root clipChildren: false.
+
+	"elt tiles children first tile tagAccessibleNeighbors.
+	elt tiles children do: [ :e | e updateBackgroundRepresentation ]."
+
+
+	space show
+]
+
 { #category : #accessing }
 LGame >> activePlayer [ 
 
@@ -52,7 +75,8 @@ LGame >> boardElement [
 { #category : #accessing }
 LGame >> boardElement: aLBoardElement [
 
-	boardElement := aLBoardElement 
+	boardElement := aLBoardElement.
+	aLBoardElement game: self.
 ]
 
 { #category : #'as yet unclassified' }
@@ -111,10 +135,11 @@ LGame >> isFinished [
 { #category : #'as yet unclassified' }
 LGame >> nextPlayer [
 
-	|link nextLink |
+	| link nextLink |
 	link := self players linkOf: self activePlayer.
 	nextLink := link nextLink ifNil: [ self players firstLink ].
 	self activePlayer: nextLink value.
+	self enterTilePhase 
 ]
 
 { #category : #'as yet unclassified' }
@@ -152,8 +177,6 @@ LGame >> players: aSet [
 { #category : #'as yet unclassified' }
 LGame >> prepareGame [
 
-	self board: LBoard new.
-	"other things"
 	self addPlayer: (LPlayer new name: 'A').
 	self addPlayer: (LPlayer new name: 'B').
 	self addPlayer: (LPlayer new name: 'C').
