@@ -209,12 +209,12 @@ LTileElement >> spawnRepresentation [
 
 	| elt |
 	elt := BlElement new
-		       size: 40 asPoint;
-		       position: 30 asPoint;
+		       size: 30 asPoint;
+		       position: 35 asPoint;
 		       border: (BlBorder paint: Color black width: 2);
 		       geometry: BlCircleGeometry new.
 	self boardPosition = (1 @ 1) ifTrue: [
-		elt background: Color lightBlue.
+		elt background: Color blue.
 		^ elt ].
 	self boardPosition = (7 @ 1) ifTrue: [
 		elt background: Color red.
@@ -265,10 +265,10 @@ LTileElement >> updateBackgroundRepresentation [
 				       size: 40 asPoint;
 				       position: 30 asPoint;
 				       geometry: BlCircleGeometry new.
-			p name = 'A' ifTrue: [ elt background: (Color lightBlue alpha: 0.2) ].
-			p name = 'B' ifTrue: [ elt background: (Color red alpha: 0.2) ].
-			p name = 'C' ifTrue: [ elt background: (Color yellow alpha: 0.2) ].
-			p name = 'D' ifTrue: [ elt background: (Color green alpha: 0.2) ].
+			p name = 'A' ifTrue: [ elt background: (Color blue alpha: 0.4) ].
+			p name = 'B' ifTrue: [ elt background: (Color red alpha: 0.4) ].
+			p name = 'C' ifTrue: [ elt background: (Color yellow alpha: 0.4) ].
+			p name = 'D' ifTrue: [ elt background: (Color green alpha: 0.4) ].
 			playerContainer addChild: elt ].
 		formElt addChild: playerContainer ].
 	tile item ifNotNil: [ :item |

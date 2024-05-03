@@ -218,13 +218,19 @@ LBoard >> insertAtColumn: anIndex toTheEnd: endBoolean [
 
 	endBoolean
 		ifTrue: [
+			col last players ifNotEmpty: [ :players |
+				col last players: OrderedCollection new.
+				extraTile players addAll: players ].
 			col addFirst: extraTile.
 			extraTile := col removeLast ]
 		ifFalse: [
+			col first players ifNotEmpty: [ :players |
+				col first players: OrderedCollection new.
+				extraTile players addAll: players ].
 			col add: extraTile.
 			extraTile := col removeFirst ].
 
-	grid atColumn: anIndex put: col.
+	grid atColumn: anIndex put: col
 ]
 
 { #category : #'as yet unclassified' }
@@ -232,13 +238,19 @@ LBoard >> insertAtRow: anIndex toTheEnd: endBoolean [
 	"endBoolean True means Left to Right"
 
 	| row |
-	row := (grid rows at: anIndex) asOrderedCollection .
+	row := (grid rows at: anIndex) asOrderedCollection.
 
 	endBoolean
 		ifTrue: [
+			row last players ifNotEmpty: [ :players |
+				row last players: OrderedCollection new.
+				extraTile players addAll: players ].
 			row addFirst: extraTile.
 			extraTile := row removeLast ]
 		ifFalse: [
+			row first players ifNotEmpty: [ :players |
+				row first players: OrderedCollection new.
+				extraTile players addAll: players ].
 			row add: extraTile.
 			extraTile := row removeFirst ].
 
