@@ -150,7 +150,8 @@ LTile >> accessible: aBoolean [
 { #category : #adding }
 LTile >> addPlayer: aLPlayer [
 
-	self players add: aLPlayer 
+	self players add: aLPlayer.
+	self tileElement updateBackgroundRepresentation 
 ]
 
 { #category : #accessing }
@@ -240,9 +241,10 @@ LTile >> randomRotate [
 ]
 
 { #category : #removing }
-LTile >> removePlayer: aLPlayer [ 
+LTile >> removePlayer: aLPlayer [
 
-	self players remove: aLPlayer 
+	self players remove: aLPlayer.
+	self tileElement updateBackgroundRepresentation
 ]
 
 { #category : #'as yet unclassified' }

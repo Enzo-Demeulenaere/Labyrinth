@@ -80,16 +80,16 @@ LGame >> boardElement: aLBoardElement [
 ]
 
 { #category : #'as yet unclassified' }
-LGame >> distributeCards [ 
+LGame >> distributeCards [
 
 	| nbPlayers nbCardsPerPlayer |
 	nbPlayers := self players size.
 	nbCardsPerPlayer := self board cards size / nbPlayers.
-	
-	self players do: [ :p | 
-		|cards|
+
+	self players do: [ :p |
+		| cards |
 		cards := self board cards removeLast: nbCardsPerPlayer.
-		p cards: cards ]
+		p cards: cards asOrderedCollection  ]
 ]
 
 { #category : #'as yet unclassified' }

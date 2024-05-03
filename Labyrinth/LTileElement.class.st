@@ -228,6 +228,23 @@ LTileElement >> updateBackgroundRepresentation [
 	config := tile configuration.
 	path := self elementForConfig: config.
 	formElt addChild: path.
+	tile players ifNotEmpty: [ :players |
+		| playerContainer |
+		playerContainer := BlElement new
+			                   size: 100 asPoint;
+			                   background: Color transparent.
+		players do: [ :p |
+			| elt |
+			elt := BlElement new
+				       size: 40 asPoint;
+				       position: 30 asPoint;
+				       geometry: BlCircleGeometry new.
+			p name = 'A' ifTrue: [ elt background: (Color blue alpha: 0.2) ].
+			p name = 'B' ifTrue: [ elt background: (Color red alpha: 0.2) ].
+			p name = 'C' ifTrue: [ elt background: (Color yellow alpha: 0.2) ].
+			p name = 'D' ifTrue: [ elt background: (Color green alpha: 0.2) ].
+			playerContainer addChild: elt ].
+		formElt addChild: playerContainer ].
 	tile item ifNotNil: [ :item |
 		| itemElt |
 		itemElt := (item icon scaledIntoFormOfSize: 40 asPoint) asElement.
