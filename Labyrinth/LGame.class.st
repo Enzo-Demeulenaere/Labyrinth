@@ -26,7 +26,8 @@ LGame >> activePlayer: aLPlayer [
 { #category : #adding }
 LGame >> addPlayer: aLPlayer [
 
-	players add: aLPlayer
+	players add: aLPlayer.
+	aLPlayer game: self
 ]
 
 { #category : #accessing }
@@ -79,6 +80,13 @@ LGame >> enterTilePhase [
 
 	self boardElement showArrows
 	"arrows are now showing, when an arrows is clicked on, they disappear and we enter the movePhase"
+]
+
+{ #category : #initialization }
+LGame >> finish [ 
+
+	finished := true.
+	"things at the end"
 ]
 
 { #category : #accessing }

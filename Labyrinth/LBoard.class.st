@@ -258,3 +258,17 @@ LBoard >> mapAccessibleTilesForPlayer: aLPlayer [
 	initialTile := aLPlayer tile.
 	initialTile tagAccessibleNeighbors
 ]
+
+{ #category : #'as yet unclassified' }
+LBoard >> movePlayerTo: aLTile [
+
+	| player |
+	player := self game activePlayer.
+	player tile removePlayer: player.
+	player tile: aLTile.
+	player checkItem.
+	self grid do: [ :e |
+		e removeEventHandlers.
+		e accessible: false ].
+	self boardElement tiles do: [ :e | e updateBackgroundRepresentation ]
+]

@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'cards',
 		'name',
-		'tile'
+		'tile',
+		'game'
 	],
 	#category : #'Labyrinth-Model'
 }
@@ -28,6 +29,26 @@ LPlayer >> cards: aCollection [
 	cards := aCollection 
 ]
 
+{ #category : #'as yet unclassified' }
+LPlayer >> checkItem [ 
+
+	self tile item ifNotNil: [ :item |
+		item = self cards first item ifTrue: [ 
+			self nextItem ] ]
+]
+
+{ #category : #accessing }
+LPlayer >> game [ 
+
+	^ game
+]
+
+{ #category : #accessing }
+LPlayer >> game: aLGame [
+
+	game := aLGame 
+]
+
 { #category : #initialization }
 LPlayer >> initialize [
 
@@ -45,6 +66,13 @@ LPlayer >> name [
 LPlayer >> name: aString [ 
 
 	name := aString 
+]
+
+{ #category : #queries }
+LPlayer >> nextItem [
+
+	self cards removeFirst.
+	self cards ifEmpty: [ self game finish ]
 ]
 
 { #category : #accessing }
