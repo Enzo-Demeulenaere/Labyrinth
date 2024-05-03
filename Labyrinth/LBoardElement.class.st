@@ -5,7 +5,8 @@ Class {
 		'board',
 		'arrows',
 		'tiles',
-		'extraTileElement'
+		'extraTileElement',
+		'game'
 	],
 	#category : #'Labyrinth-UI'
 }
@@ -47,7 +48,8 @@ LBoardElement class >> open [
 	elt tiles children do: [ :e | e updateBackgroundRepresentation ]."
 
 
-	space show
+	space show.
+	^ elt
 ]
 
 { #category : #'as yet unclassified' }
@@ -72,9 +74,20 @@ LBoardElement >> arrowVertical: directionBoolean at: aNumber toTheEnd: endBoolea
 				         insertAt: aNumber
 				         isVertical: directionBoolean
 				         toTheEnd: endBoolean.
-			         self updateLineVertical: directionBoolean at: aNumber toTheEnd: endBoolean ].
+			         self
+				         updateLineVertical: directionBoolean
+				         at: aNumber
+				         toTheEnd: endBoolean.
+						self hideArrows.
+			         self game enterMovePhase ].
 
 	^ arrow
+]
+
+{ #category : #accessing }
+LBoardElement >> arrows [ 
+
+	^ arrows
 ]
 
 { #category : #accessing }
@@ -87,6 +100,7 @@ LBoardElement >> board [
 LBoardElement >> board: aLBoard [
 
 	board := aLBoard.
+	aLBoard boardElement: self.
 	self initializeTiles.
 	self initializeExtraTile.
 	self initializeBoardArrows.
@@ -109,6 +123,25 @@ LBoardElement >> extraTileElement: aLTile [
 LBoardElement >> fillElement [
 
 	^ BlElement new background: Color transparent; size: 100 asPoint.
+]
+
+{ #category : #accessing }
+LBoardElement >> game [ 
+
+	^ game 
+]
+
+{ #category : #accessing }
+LBoardElement >> game: aLGame [
+
+	game := aLGame 
+]
+
+{ #category : #'as yet unclassified' }
+LBoardElement >> hideArrows [ 
+
+	self arrows do: [ :e |
+		e visibility: BlVisibilityHidden new ]
 ]
 
 { #category : #initialization }
@@ -241,6 +274,12 @@ LBoardElement >> initializeTiles [
 		elt := LTileElement tile: aTile.
 		elt boardPosition: aTile position.
 		tiles addChild: elt ]
+]
+
+{ #category : #'as yet unclassified' }
+LBoardElement >> showArrows [
+
+	self arrows do: [ :e | e visibility: BlVisibilityVisible new ]
 ]
 
 { #category : #accessing }

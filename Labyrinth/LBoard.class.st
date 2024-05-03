@@ -5,10 +5,23 @@ Class {
 		'extraTile',
 		'cards',
 		'items',
-		'game'
+		'game',
+		'boardElement'
 	],
 	#category : #'Labyrinth-Model'
 }
+
+{ #category : #accessing }
+LBoard >> boardElement [ 
+
+	^ boardElement
+]
+
+{ #category : #accessing }
+LBoard >> boardElement: aLBoardElement [
+
+	boardElement := aLBoardElement 
+]
 
 { #category : #accessing }
 LBoard >> cards [ 

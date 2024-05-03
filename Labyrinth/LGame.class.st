@@ -5,7 +5,8 @@ Class {
 		'players',
 		'finished',
 		'board',
-		'activePlayer'
+		'activePlayer',
+		'boardElement'
 	],
 	#category : #'Labyrinth-Model'
 }
@@ -41,6 +42,18 @@ LGame >> board: aLBoard [
 	aLBoard game: self.
 ]
 
+{ #category : #accessing }
+LGame >> boardElement [ 
+
+	^ boardElement 
+]
+
+{ #category : #accessing }
+LGame >> boardElement: aLBoardElement [
+
+	boardElement := aLBoardElement 
+]
+
 { #category : #'as yet unclassified' }
 LGame >> distributeCards [ 
 
@@ -52,6 +65,20 @@ LGame >> distributeCards [
 		|cards|
 		cards := self board cards removeLast: nbCardsPerPlayer.
 		p cards: cards ]
+]
+
+{ #category : #'as yet unclassified' }
+LGame >> enterMovePhase [
+
+	self board mapAccessibleTilesForPlayer: self activePlayer.
+	"the accessible tiles are now highlighted and we wait for the player to click on one of those to check for picking the item before moving to the next player"
+]
+
+{ #category : #'as yet unclassified' }
+LGame >> enterTilePhase [
+
+	self boardElement showArrows
+	"arrows are now showing, when an arrows is clicked on, they disappear and we enter the movePhase"
 ]
 
 { #category : #accessing }
@@ -99,11 +126,7 @@ LGame >> play [
 
 	self distributeCards.
 	self finished: false.
-	"[ self isFinished ] whileFalse: [
-		self activePlayer placeTile.
-		self activePlayer move.
-		self nextPlayer.
-		self finished: true ]"
+	self enterTilePhase
 ]
 
 { #category : #accessing }
