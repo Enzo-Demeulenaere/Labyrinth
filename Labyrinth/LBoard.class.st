@@ -5,16 +5,10 @@ Class {
 		'extraTile',
 		'cards',
 		'items',
-		'players'
+		'game'
 	],
 	#category : #'Labyrinth-Model'
 }
-
-{ #category : #adding }
-LBoard >> addPlayer: aLPlayer [ 
-
-	players add: aLPlayer 
-]
 
 { #category : #accessing }
 LBoard >> cards [ 
@@ -48,11 +42,22 @@ LBoard >> extraTile: aLTile [
 	extraTile := aLTile 
 ]
 
+{ #category : #accessing }
+LBoard >> game [ 
+
+	^ game
+]
+
+{ #category : #accessing }
+LBoard >> game: aLGame [
+
+	game := aLGame 
+]
+
 { #category : #initialization }
 LBoard >> initialize [
 
 	super initialize.
-	players := Set new.
 	self initializeItems.
 	self initializeCards.
 	self initializeTiles
@@ -239,16 +244,4 @@ LBoard >> mapAccessibleTilesForPlayer: aLPlayer [
 	| initialTile |
 	initialTile := aLPlayer tile.
 	initialTile tagAccessibleNeighbors
-]
-
-{ #category : #accessing }
-LBoard >> players [ 
-
-	^ players
-]
-
-{ #category : #accessing }
-LBoard >> players: aSet [
-
-	players := aSet
 ]
