@@ -56,5 +56,6 @@ LPlayer >> tile [
 { #category : #accessing }
 LPlayer >> tile: aLTile [
 
-	tile := aLTile 
+	tile := aLTile.
+	aLTile addPlayer: self
 ]

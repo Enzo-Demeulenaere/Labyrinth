@@ -145,6 +145,12 @@ LTile >> accessible: aBoolean [
 	accessible := aBoolean.
 ]
 
+{ #category : #adding }
+LTile >> addPlayer: aLPlayer [
+
+	self players add: aLPlayer 
+]
+
 { #category : #accessing }
 LTile >> configuration [
 
@@ -177,10 +183,11 @@ LTile >> directions: aDictionary [
 ]
 
 { #category : #initialization }
-LTile >> initialize [ 
+LTile >> initialize [
 
 	super initialize.
 	accessible := false.
+	players := OrderedCollection new.
 ]
 
 { #category : #testing }
@@ -228,6 +235,12 @@ LTile >> randomRotate [
 	| nbRotate |
 	nbRotate := { 0. 1. 2. 3 } atRandom.
 	self rotateLeftTimes: nbRotate.
+]
+
+{ #category : #removing }
+LTile >> removePlayer: aLPlayer [ 
+
+	self players remove: aLPlayer 
 ]
 
 { #category : #'as yet unclassified' }

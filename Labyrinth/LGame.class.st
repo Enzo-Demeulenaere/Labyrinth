@@ -37,7 +37,8 @@ LGame >> board [
 { #category : #accessing }
 LGame >> board: aLBoard [
 
-	board := aLBoard 
+	board := aLBoard.
+	aLBoard game: self.
 ]
 
 { #category : #'as yet unclassified' }
@@ -81,13 +82,28 @@ LGame >> nextPlayer [
 	self activePlayer: nextLink value.
 ]
 
+{ #category : #'as yet unclassified' }
+LGame >> placePlayers [
+
+	self players first tile: (self board grid at: 1 @ 1).
+	self players size >= 2 ifTrue: [
+		(self players at: 2) tile: (self board grid at: 7 @ 1) ].
+	self players size >= 3 ifTrue: [
+		(self players at: 3) tile: (self board grid at: 1 @ 7) ].
+	self players size = 4 ifTrue: [
+		(self players at: 4) tile: (self board grid at: 7 @ 7) ]
+]
+
 { #category : #execution }
 LGame >> play [
 
 	self distributeCards.
 	self finished: false.
-	[self isFinished] whileFalse: [ 
-		self finished: true."game loop" ]
+	"[ self isFinished ] whileFalse: [
+		self activePlayer placeTile.
+		self activePlayer move.
+		self nextPlayer.
+		self finished: true ]"
 ]
 
 { #category : #accessing }
@@ -109,6 +125,9 @@ LGame >> prepareGame [
 	"other things"
 	self addPlayer: (LPlayer new name: 'A').
 	self addPlayer: (LPlayer new name: 'B').
+	self addPlayer: (LPlayer new name: 'C').
+	self addPlayer: (LPlayer new name: 'D').
 	self activePlayer: self players first.
+	self placePlayers.
 	self play
 ]
