@@ -204,6 +204,30 @@ LTileElement >> rotateRightTimes: aNumber [
 	self rotateRightTimes: aNumber - 1
 ]
 
+{ #category : #'as yet unclassified' }
+LTileElement >> spawnRepresentation [
+
+	| elt |
+	elt := BlElement new
+		       size: 40 asPoint;
+		       position: 30 asPoint;
+		       border: (BlBorder paint: Color black width: 2);
+		       geometry: BlCircleGeometry new.
+	self boardPosition = (1 @ 1) ifTrue: [
+		elt background: Color lightBlue.
+		^ elt ].
+	self boardPosition = (7 @ 1) ifTrue: [
+		elt background: Color red.
+		^ elt ].
+	self boardPosition = (1 @ 7) ifTrue: [
+		elt background: Color yellow.
+		^ elt ].
+	self boardPosition = (7 @ 7) ifTrue: [
+		elt background: Color green.
+		^ elt ].
+	^ nil
+]
+
 { #category : #accessing }
 LTileElement >> tile [ 
 
@@ -222,12 +246,14 @@ LTileElement >> tile: aLTile [
 { #category : #'change reporting' }
 LTileElement >> updateBackgroundRepresentation [
 
-	| form path formElt config |
+	| form path formElt config spawn |
 	formElt := (LRessources wallIcon scaledIntoFormOfSize: 100 asPoint)
 		           asElement.
 	config := tile configuration.
 	path := self elementForConfig: config.
 	formElt addChild: path.
+	spawn := self spawnRepresentation.
+	spawn ifNotNil: [ formElt addChild: spawn ].
 	tile players ifNotEmpty: [ :players |
 		| playerContainer |
 		playerContainer := BlElement new
@@ -239,7 +265,7 @@ LTileElement >> updateBackgroundRepresentation [
 				       size: 40 asPoint;
 				       position: 30 asPoint;
 				       geometry: BlCircleGeometry new.
-			p name = 'A' ifTrue: [ elt background: (Color blue alpha: 0.2) ].
+			p name = 'A' ifTrue: [ elt background: (Color lightBlue alpha: 0.2) ].
 			p name = 'B' ifTrue: [ elt background: (Color red alpha: 0.2) ].
 			p name = 'C' ifTrue: [ elt background: (Color yellow alpha: 0.2) ].
 			p name = 'D' ifTrue: [ elt background: (Color green alpha: 0.2) ].
