@@ -30,11 +30,11 @@ LPlayer >> cards: aCollection [
 ]
 
 { #category : #'as yet unclassified' }
-LPlayer >> checkItem [ 
+LPlayer >> checkItem [
 
+	self cards ifEmpty: [ "check si c'est le spawn" ].
 	self tile item ifNotNil: [ :item |
-		item = self cards first item ifTrue: [ 
-			self nextItem ] ]
+		item = self cards first item ifTrue: [ self nextItem ] ]
 ]
 
 { #category : #accessing }

@@ -11,6 +11,57 @@ Class {
 	#category : #'Labyrinth-Model'
 }
 
+{ #category : #'as yet unclassified' }
+LGame class >> gameTest2Players [
+
+	| board elt game |
+	board := LBoard new.
+	elt := LBoardElement new board: board.
+	game := self new boardElement: elt.
+	game board: board.
+
+	game addPlayer: (LPlayer new name: 'A').
+	game addPlayer: (LPlayer new name: 'B').
+
+	game launchGame.
+	^ game
+]
+
+{ #category : #'as yet unclassified' }
+LGame class >> gameTest3Players [
+
+	| board elt game |
+	board := LBoard new.
+	elt := LBoardElement new board: board.
+	game := self new boardElement: elt.
+	game board: board.
+
+	game addPlayer: (LPlayer new name: 'A').
+	game addPlayer: (LPlayer new name: 'B').
+	game addPlayer: (LPlayer new name: 'C').
+
+	game launchGame.
+	^ game
+]
+
+{ #category : #'as yet unclassified' }
+LGame class >> gameTest4Players [
+
+	| board elt game |
+	board := LBoard new.
+	elt := LBoardElement new board: board.
+	game := self new boardElement: elt.
+	game board: board.
+
+	game addPlayer: (LPlayer new name: 'A').
+	game addPlayer: (LPlayer new name: 'B').
+	game addPlayer: (LPlayer new name: 'C').
+	game addPlayer: (LPlayer new name: 'D').
+	
+	game launchGame.
+	^ game
+]
+
 { #category : #'instance creation' }
 LGame class >> open [
 
@@ -21,17 +72,54 @@ LGame class >> open [
 	game := self new boardElement: elt.
 	game board: board.
 
-	game prepareGame.
+	game launchGame.
 
 	space := BlSpace new extent: 1500 @ 1000.
 	space root addChild: elt.
 	space root clipChildren: false.
 
-	"elt tiles children first tile tagAccessibleNeighbors.
-	elt tiles children do: [ :e | e updateBackgroundRepresentation ]."
+	space show.
 
+	^ game 
+]
 
-	space show
+{ #category : #'instance creation' }
+LGame class >> openTest [
+
+	<script>
+	| game elt board space gameElement scoreContainerElement |
+	space := BlSpace new extent: 1800 @ 1200.
+
+	gameElement := BlElement new
+		               constraintsDo: [ :c |
+			               c vertical matchParent.
+			               c horizontal matchParent ];
+		               layout: BlLinearLayout horizontal.
+
+	game := self gameTest4Players.
+
+	game boardElement
+		background: Color lightRed;
+		constraintsDo: [ :c | c linear vertical alignCenter ].
+	gameElement addChild: game boardElement.
+
+	scoreContainerElement := BlElement new
+		                         background: Color lightBlue;
+		                         layout: BlFrameLayout new;
+		                         constraintsDo: [ :c |
+			                         c vertical matchParent.
+			                         c horizontal matchParent ].
+
+	gameElement addChild: scoreContainerElement.
+
+	space root addChild: gameElement.
+	space show.
+	^ self
+	"space root clipChildren: false.
+
+	space show.
+
+	^ game"
 ]
 
 { #category : #accessing }
@@ -133,6 +221,15 @@ LGame >> isFinished [
 ]
 
 { #category : #'as yet unclassified' }
+LGame >> launchGame [
+
+	self players ifEmpty: [ self notify: 'Impossible to launch a game with no players'. ^ self ].
+	self activePlayer: self players first.
+	self placePlayers.
+	self play
+]
+
+{ #category : #'as yet unclassified' }
 LGame >> nextPlayer [
 
 	| link nextLink |
@@ -172,16 +269,4 @@ LGame >> players [
 LGame >> players: aSet [
 
 	players := aSet
-]
-
-{ #category : #'as yet unclassified' }
-LGame >> prepareGame [
-
-	self addPlayer: (LPlayer new name: 'A').
-	self addPlayer: (LPlayer new name: 'B').
-	self addPlayer: (LPlayer new name: 'C').
-	self addPlayer: (LPlayer new name: 'D').
-	self activePlayer: self players first.
-	self placePlayers.
-	self play
 ]

@@ -33,6 +33,23 @@ shape := BlElement new
 	^ shape asForm
 ]
 
+{ #category : #'as yet unclassified' }
+LBoardElement class >> cardElement [
+
+	| elt |
+	elt := BlElement new
+		       size: 100 asPoint;
+		       background: Color blue muchLighter;
+		       geometry: (BlRoundedRectangleGeometry cornerRadius: 20).
+	elt addChild: (BlElement new
+			 size: 80 asPoint;
+			 position: 10 asPoint;
+			 background: Color white;
+			 geometry: BlCircleGeometry new).
+
+	^ elt
+]
+
 { #category : #'instance creation' }
 LBoardElement class >> open [
 
@@ -40,7 +57,7 @@ LBoardElement class >> open [
 	| elt space |
 	elt := self new board: LBoard new.
 
-	space := BlSpace new extent: 1500 @ 1000.
+	space := BlSpace new extent: 1500 @ 900.
 	space root addChild: elt.
 	space root clipChildren: false.
 
@@ -103,7 +120,7 @@ LBoardElement >> board: aLBoard [
 	aLBoard boardElement: self.
 	self initializeTiles.
 	self initializeExtraTile.
-	self initializeBoardArrows.
+	self initializeBoardWithArrows.
 	self initializeCards
 ]
 
@@ -149,7 +166,7 @@ LBoardElement >> initialize [
 
 	super initialize.
 	self
-		size: 1000 asPoint;
+		size: 1300 @ 900 ;
 		background: (BlBackground paint: Color transparent);
 		requestFocus
 ]
@@ -172,12 +189,13 @@ LBoardElement >> initializeArrows [
 ]
 
 { #category : #initialization }
-LBoardElement >> initializeBoardArrows [
+LBoardElement >> initializeBoardWithArrows [
 
 	| container |
 	container := BlElement new
 		             background: Color transparent;
 		             layout: (BlGridLayout new horizontal columnCount: 9);
+		             position: 400 @ 0;
 		             size: 900 asPoint.
 	self initializeArrows.
 
@@ -230,22 +248,22 @@ LBoardElement >> initializeExtraTile [
 	| rotateLeft rotateRight |
 	extraTileElement := LTileElement tile: board extraTile.
 
-	extraTileElement position: 900 @ 0.
+	extraTileElement position: 150 @ 400.
 	self addChild: extraTileElement.
 
 
 	rotateLeft := BlTextElement new
-		              size: 40 @ 20;
+		              size: 100 @ 20;
 		              background: Color veryLightGray;
 		              border: (BlBorder paint: Color black width: 1);
 		              text: 'Rotate left' asRopedText;
-		              position: 900 @ 105.
+		              position: 150 @ 505.
 	rotateRight := BlTextElement new
-		               size: 40 @ 20;
+		               size: 100 @ 20;
 		               background: Color veryLightGray;
 		               border: (BlBorder paint: Color black width: 1);
 		               text: 'Rotate right' asRopedText;
-		               position: 950 @ 105.
+		               position: 150 @ 535.
 
 	rotateLeft
 		addEventHandlerOn: BlClickEvent
