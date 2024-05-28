@@ -95,8 +95,8 @@ LBoardElement >> arrowVertical: directionBoolean at: aNumber toTheEnd: endBoolea
 				         updateLineVertical: directionBoolean
 				         at: aNumber
 				         toTheEnd: endBoolean.
-						self hideArrows.
-			         self game enterMovePhase ].
+			         self hideArrows.
+			         self board game enterMovePhase ].
 
 	^ arrow
 ]
@@ -121,7 +121,7 @@ LBoardElement >> board: aLBoard [
 	self initializeTiles.
 	self initializeExtraTile.
 	self initializeBoardWithArrows.
-	self initializeCards
+	"self initializeCards"
 ]
 
 { #category : #accessing }
@@ -151,7 +151,8 @@ LBoardElement >> game [
 { #category : #accessing }
 LBoardElement >> game: aLGame [
 
-	game := aLGame 
+	game := aLGame.
+	aLGame board: self board.
 ]
 
 { #category : #'as yet unclassified' }

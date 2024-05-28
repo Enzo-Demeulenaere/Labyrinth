@@ -6,7 +6,9 @@ Class {
 		'finished',
 		'board',
 		'activePlayer',
-		'boardElement'
+		'boardElement',
+		'scoreElements',
+		'gameElement'
 	],
 	#category : #'Labyrinth-Model'
 }
@@ -47,17 +49,14 @@ LGame class >> gameTest3Players [
 { #category : #'as yet unclassified' }
 LGame class >> gameTest4Players [
 
-	| board elt game |
-	board := LBoard new.
-	elt := LBoardElement new board: board.
-	game := self new boardElement: elt.
-	game board: board.
+	| game |
+	game := self new.
 
 	game addPlayer: (LPlayer new name: 'A').
 	game addPlayer: (LPlayer new name: 'B').
 	game addPlayer: (LPlayer new name: 'C').
 	game addPlayer: (LPlayer new name: 'D').
-	
+
 	game launchGame.
 	^ game
 ]
@@ -87,30 +86,25 @@ LGame class >> open [
 LGame class >> openTest [
 
 	<script>
-	| game elt board space gameElement scoreContainerElement |
+	| game space gameElement |
 	space := BlSpace new extent: 1800 @ 1200.
-
-	gameElement := BlElement new
-		               constraintsDo: [ :c |
-			               c vertical matchParent.
-			               c horizontal matchParent ];
-		               layout: BlLinearLayout horizontal.
 
 	game := self gameTest4Players.
 
 	game boardElement
 		background: Color lightRed;
 		constraintsDo: [ :c | c linear vertical alignCenter ].
-	gameElement addChild: game boardElement.
 
-	scoreContainerElement := BlElement new
-		                         background: Color lightBlue;
-		                         layout: BlFrameLayout new;
-		                         constraintsDo: [ :c |
-			                         c vertical matchParent.
-			                         c horizontal matchParent ].
+	gameElement := game gameElement.
 
-	gameElement addChild: scoreContainerElement.
+	"scoreContainer := gameElement scoreContainerElement.
+
+	scoreContainer
+		background: Color lightBlue;
+		layout: BlFrameLayout new;
+		constraintsDo: [ :c |
+			c vertical matchParent.
+			c horizontal matchParent ]."
 
 	space root addChild: gameElement.
 	space show.
@@ -207,11 +201,31 @@ LGame >> finished: aBoolean [
 	finished := aBoolean 
 ]
 
+{ #category : #accessing }
+LGame >> gameElement [ 
+
+	^ gameElement 
+]
+
+{ #category : #accessing }
+LGame >> gameElement: aLGameElement [
+
+	gameElement := aLGameElement.
+	aLGameElement game: self
+]
+
 { #category : #initialization }
 LGame >> initialize [
 
 	super initialize.
-	players := LinkedList new
+	players := LinkedList new.
+	self gameElement: LGameElement new.
+]
+
+{ #category : #initialization }
+LGame >> initializeScoreElements [
+
+	self gameElement initializeScoreElements 
 ]
 
 { #category : #testing }
@@ -223,10 +237,14 @@ LGame >> isFinished [
 { #category : #'as yet unclassified' }
 LGame >> launchGame [
 
-	self players ifEmpty: [ self notify: 'Impossible to launch a game with no players'. ^ self ].
+	self players ifEmpty: [
+		self notify: 'Impossible to launch a game with no players'.
+		^ self ].
 	self activePlayer: self players first.
 	self placePlayers.
-	self play
+	self play.
+	self initializeScoreElements.
+
 ]
 
 { #category : #'as yet unclassified' }
@@ -269,4 +287,16 @@ LGame >> players [
 LGame >> players: aSet [
 
 	players := aSet
+]
+
+{ #category : #accessing }
+LGame >> scoreElement [ 
+
+	^ scoreElements 
+]
+
+{ #category : #accessing }
+LGame >> scoreElement: aBlElement [
+
+	scoreElements := aBlElement 
 ]
