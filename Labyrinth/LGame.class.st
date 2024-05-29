@@ -16,11 +16,8 @@ Class {
 { #category : #'as yet unclassified' }
 LGame class >> gameTest2Players [
 
-	| board elt game |
-	board := LBoard new.
-	elt := LBoardElement new board: board.
-	game := self new boardElement: elt.
-	game board: board.
+	| game |
+	game := self new.
 
 	game addPlayer: (LPlayer new name: 'A').
 	game addPlayer: (LPlayer new name: 'B').
@@ -32,11 +29,8 @@ LGame class >> gameTest2Players [
 { #category : #'as yet unclassified' }
 LGame class >> gameTest3Players [
 
-	| board elt game |
-	board := LBoard new.
-	elt := LBoardElement new board: board.
-	game := self new boardElement: elt.
-	game board: board.
+	| game |
+	game := self new.
 
 	game addPlayer: (LPlayer new name: 'A').
 	game addPlayer: (LPlayer new name: 'B').
@@ -83,7 +77,46 @@ LGame class >> open [
 ]
 
 { #category : #'instance creation' }
-LGame class >> openTest [
+LGame class >> openTest2Players [
+
+	<script>
+	| game space gameElement |
+	space := BlSpace new extent: 1800 @ 1200.
+
+	game := self gameTest2Players.
+
+	game boardElement constraintsDo: [ :c |
+		c linear vertical alignCenter ].
+
+	gameElement := game gameElement.
+
+	space root addChild: gameElement.
+	space show.
+	^ self
+
+]
+
+{ #category : #'instance creation' }
+LGame class >> openTest3Players [
+
+	<script>
+	| game space gameElement |
+	space := BlSpace new extent: 1800 @ 1200.
+
+	game := self gameTest3Players.
+
+	game boardElement constraintsDo: [ :c |
+		c linear vertical alignCenter ].
+
+	gameElement := game gameElement.
+
+	space root addChild: gameElement.
+	space show.
+	^ self
+]
+
+{ #category : #'instance creation' }
+LGame class >> openTest4Players [
 
 	<script>
 	| game space gameElement |
@@ -91,28 +124,15 @@ LGame class >> openTest [
 
 	game := self gameTest4Players.
 
-	game boardElement
-		constraintsDo: [ :c | c linear vertical alignCenter ].
+	game boardElement constraintsDo: [ :c |
+		c linear vertical alignCenter ].
 
 	gameElement := game gameElement.
-
-	"scoreContainer := gameElement scoreContainerElement.
-
-	scoreContainer
-		background: Color lightBlue;
-		layout: BlFrameLayout new;
-		constraintsDo: [ :c |
-			c vertical matchParent.
-			c horizontal matchParent ]."
 
 	space root addChild: gameElement.
 	space show.
 	^ self
-	"space root clipChildren: false.
 
-	space show.
-
-	^ game"
 ]
 
 { #category : #accessing }
