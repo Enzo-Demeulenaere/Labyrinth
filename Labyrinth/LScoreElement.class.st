@@ -27,7 +27,6 @@ LScoreElement >> initializeCards [
 	cardsSlot := BlElement new
 		             size: 300 @ 120;
 		             background: Color veryVeryLightGray;
-		             padding: (BlInsets all: 10);
 		             geometry:
 			             (BlRoundedRectangleGeometry cornerRadii:
 					              (BlCornerRadii new
@@ -40,7 +39,7 @@ LScoreElement >> initializeCards [
 	self player cards size to: 1 by: -1 do: [ :i |
 		| cardElt |
 		cardElt := LCardElement card: (self player cards at: i).
-		cardElt position: i - 1 * 20 @ 0.
+		cardElt position: i - 1 * 20 + 40 @ 10.
 		cardsSlot addChild: cardElt ].
 
 	self addChild: cardsSlot

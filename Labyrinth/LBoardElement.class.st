@@ -12,28 +12,6 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-LBoardElement class >> arrowForm [ 
-
-	| w h shape |
-	w := 100.
-h := 100.
-shape := BlElement new
-		         size: w @ h;
-		         background: Color lightGreen ;
-		         border: (BlBorder paint: Color gray width: 2);
-		         geometry: (BlPolygonGeometry vertices: {
-						          (w / 3 @ 0).
-						          (w * 2/3 @ 0).
-						          (w * 2/3 @ (h /2)).
-						          (w  @ (h /2)).
-						          (w / 2 @ h).
-						          (0 @ (h/2)).
-									(w /3 @ (h/2) )}).
-									
-	^ shape asForm
-]
-
-{ #category : #'as yet unclassified' }
 LBoardElement class >> cardElement [
 
 	| elt |
@@ -70,10 +48,85 @@ LBoardElement class >> open [
 ]
 
 { #category : #'as yet unclassified' }
+LBoardElement class >> rotateLeftArrowElement [
+	"<script>"
+
+	| annulus arrow border container |
+	
+	border := BlBorder paint: Color lightGray width: 2.
+	annulus := BlElement new
+		           background: Color lightGreen;
+		           size: 100 asPoint;
+		           geometry: (BlAnnulusSectorGeometry new
+				            startAngle: 45;
+				            endAngle: 135;
+				            innerRadius: 0.6;
+				            outerRadius: 0.95);
+		           border: border.
+
+	arrow := BlElement new
+		         background: Color lightGreen;
+		         geometry: (BlPolylineGeometry vertices: {
+						          (12 @ 20).
+						          (0 @ 20).
+						          (20 @ 0).
+						          (40 @ 20).
+						          (28 @ 20) });
+		         border: border.
+
+	arrow position: 50 @ 62.
+	arrow transformDo: [ :t | t rotateBy: 45 ].
+
+
+	container := BlElement new size: 100 asPoint.
+
+	container addChild: annulus.
+	container addChild: arrow.
+
+	"container childrenDo: [ :each |
+		each addEventHandlerOn: BlClickEvent do: [ each inspect ] ]."
+
+	"container openInSpace."
+	^ container
+]
+
+{ #category : #'as yet unclassified' }
+LBoardElement class >> rotateRightArrowElement [
+
+	| container |
+	container := self rotateLeftArrowElement.
+	container transformDo: [ :t | t flipX ].
+
+	^ container
+]
+
+{ #category : #'as yet unclassified' }
+LBoardElement class >> slideArrowForm [ 
+
+	| w h shape |
+	w := 100.
+h := 100.
+shape := BlElement new
+		         size: w @ h;
+		         background: Color lightGreen ;
+		         border: (BlBorder paint: Color gray width: 2);
+		         geometry: (BlPolygonGeometry vertices: {
+						          (w / 3 @ 0).
+						          (w * 2/3 @ 0).
+						          (w * 2/3 @ (h /2)).
+						          (w  @ (h /2)).
+						          (w / 2 @ h).
+						          (0 @ (h/2)).
+									(w /3 @ (h/2) )}).
+									
+	^ shape asForm
+]
+
+{ #category : #'as yet unclassified' }
 LBoardElement >> arrowVertical: directionBoolean at: aNumber toTheEnd: endBoolean [
 
 	| arrow form |
-	form := self class arrowForm.
+	form := self class slideArrowForm.
 	"rotate form"
 	directionBoolean
 		ifTrue: [
@@ -252,8 +305,23 @@ LBoardElement >> initializeExtraTile [
 	extraTileElement position: 150 @ 400.
 	self addChild: extraTileElement.
 
+	rotateLeft := self class rotateLeftArrowElement.
+	rotateLeft position: 150 @ 450.
 
-	rotateLeft := BlTextElement new
+	rotateRight := self class rotateRightArrowElement.
+	rotateRight position: 150 @ 350.
+
+	rotateLeft childrenDo: [ :each |
+		each
+			addEventHandlerOn: BlClickEvent
+			do: [ extraTileElement rotateLeft ] ].
+
+	rotateRight childrenDo: [ :each |
+		each
+			addEventHandlerOn: BlClickEvent
+			do: [ extraTileElement rotateRight ] ].
+
+	"rotateLeft := BlTextElement new
 		              size: 100 @ 20;
 		              background: Color veryLightGray;
 		              border: (BlBorder paint: Color black width: 1);
@@ -264,14 +332,10 @@ LBoardElement >> initializeExtraTile [
 		               background: Color veryLightGray;
 		               border: (BlBorder paint: Color black width: 1);
 		               text: 'Rotate right' asRopedText;
-		               position: 150 @ 535.
-
-	rotateLeft
+		               position: 150 @ 535."
+	"rotateRight
 		addEventHandlerOn: BlClickEvent
-		do: [ extraTileElement rotateLeft ].
-	rotateRight
-		addEventHandlerOn: BlClickEvent
-		do: [ extraTileElement rotateRight ].
+		do: [ extraTileElement rotateRight ]."
 
 	self addChild: rotateLeft.
 	self addChild: rotateRight

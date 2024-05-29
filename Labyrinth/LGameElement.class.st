@@ -44,7 +44,7 @@ LGameElement >> initialize [
 		c horizontal matchParent ].
 	self background: (BlLinearGradientPaint horizontal
 			 from: Color white
-			 to: Color lightGreen).
+			 to: Color lightOrange).
 	self layout: BlLinearLayout horizontal.
 	self initializeBoardElement
 	"self initializeScoreElements"
@@ -72,7 +72,6 @@ LGameElement >> initializeScoreElements [
 	scoreElements := OrderedCollection new.
 
 	scoreContainerElement := BlElement new
-		                         background: Color lightYellow;
 		                         layout: BlLinearLayout vertical;
 		                         constraintsDo: [ :c |
 			                         c frame vertical alignCenter.

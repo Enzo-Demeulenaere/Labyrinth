@@ -22,7 +22,14 @@ LCardElement >> card [
 LCardElement >> card: aLCard [
 
 	card := aLCard.
-	self displayItem.
+	aLCard cardElement: self.
+	self displayItem
+]
+
+{ #category : #actions }
+LCardElement >> disappear [ 
+
+	self visibility: BlVisibility gone.
 ]
 
 { #category : #'as yet unclassified' }
@@ -44,7 +51,7 @@ LCardElement >> initialize [
 
 	super initialize.
 	self size: 100 asPoint.
-	self geometry: (BlRoundedRectangleGeometry cornerRadius: 5).
+	self geometry: (BlRoundedRectangleGeometry cornerRadius: 25).
 	self layout: BlFrameLayout new.
 	self background: Color white.
 	self border: (BlBorder paint: Color darkGray width: 3)

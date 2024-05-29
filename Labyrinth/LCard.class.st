@@ -2,7 +2,8 @@ Class {
 	#name : #LCard,
 	#superclass : #Object,
 	#instVars : [
-		'item'
+		'item',
+		'cardElement'
 	],
 	#category : #'Labyrinth-Model'
 }
@@ -11,6 +12,24 @@ Class {
 LCard class >> item: aLItem [ 
 
 	^ self new item: aLItem 
+]
+
+{ #category : #accessing }
+LCard >> cardElement [ 
+
+	^ cardElement
+]
+
+{ #category : #accessing }
+LCard >> cardElement: aLCardElement [
+
+	cardElement := aLCardElement 
+]
+
+{ #category : #actions }
+LCard >> disappear [ 
+
+	self cardElement disappear.
 ]
 
 { #category : #accessing }

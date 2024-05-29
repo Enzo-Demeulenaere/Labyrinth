@@ -71,6 +71,9 @@ LPlayer >> name: aString [
 { #category : #queries }
 LPlayer >> nextItem [
 
+	|card|
+	card := self cards first.
+	card disappear.
 	self cards removeFirst.
 	self cards ifEmpty: [ self game finish ]
 ]

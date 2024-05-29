@@ -92,7 +92,6 @@ LGame class >> openTest [
 	game := self gameTest4Players.
 
 	game boardElement
-		background: Color lightRed;
 		constraintsDo: [ :c | c linear vertical alignCenter ].
 
 	gameElement := game gameElement.
@@ -166,12 +165,13 @@ LGame >> distributeCards [
 
 	| nbPlayers nbCardsPerPlayer |
 	nbPlayers := self players size.
+	"nbCardsPerPlayer := 1."
 	nbCardsPerPlayer := self board cards size / nbPlayers.
 
 	self players do: [ :p |
 		| cards |
 		cards := self board cards removeLast: nbCardsPerPlayer.
-		p cards: cards asOrderedCollection  ]
+		p cards: cards asOrderedCollection ]
 ]
 
 { #category : #'as yet unclassified' }
