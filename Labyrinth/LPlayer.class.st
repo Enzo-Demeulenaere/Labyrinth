@@ -71,10 +71,11 @@ LPlayer >> name: aString [
 { #category : #queries }
 LPlayer >> nextItem [
 
-	|card|
+	| card |
 	card := self cards first.
 	card disappear.
 	self cards removeFirst.
+	"temporary before checking spawn point of the player"
 	self cards ifEmpty: [ self game finish ]
 ]
 

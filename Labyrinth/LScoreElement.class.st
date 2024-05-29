@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'player'
 	],
-	#category : #Labyrinth
+	#category : #'Labyrinth-UI'
 }
 
 { #category : #accessing }

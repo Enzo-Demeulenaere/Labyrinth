@@ -165,8 +165,8 @@ LGame >> distributeCards [
 
 	| nbPlayers nbCardsPerPlayer |
 	nbPlayers := self players size.
-	"nbCardsPerPlayer := 1."
-	nbCardsPerPlayer := self board cards size / nbPlayers.
+	nbCardsPerPlayer := 1.
+	"nbCardsPerPlayer := self board cards size / nbPlayers."
 
 	self players do: [ :p |
 		| cards |
@@ -189,9 +189,10 @@ LGame >> enterTilePhase [
 ]
 
 { #category : #initialization }
-LGame >> finish [ 
+LGame >> finish [
 
 	finished := true.
+	self gameElement finish.
 	"things at the end"
 ]
 

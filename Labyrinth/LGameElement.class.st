@@ -22,6 +22,29 @@ LGameElement >> boardElement: aLBoardElement [
 	boardElement := aLBoardElement.
 ]
 
+{ #category : #initialization }
+LGameElement >> finish [
+
+	| finishScreen finishText |
+	finishScreen := BlElement new
+		                background: (Color lightGreen alpha: 0.5);
+		                constraintsDo: [ :c |
+			                c ignoredByLayout.
+			                c vertical matchParent.
+			                c horizontal matchParent ];
+		                layout: BlFrameLayout new.
+
+	finishText := BlTextElement new
+		              text: ('Game finished' asRopedText fontSize: 150);
+		              constraintsDo: [ :c |
+			              c frame vertical alignCenter.
+			              c frame horizontal alignCenter ].
+
+	finishScreen addChild: finishText.
+
+	self parent addChild: finishScreen
+]
+
 { #category : #accessing }
 LGameElement >> game [ 
 
