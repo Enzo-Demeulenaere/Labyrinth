@@ -160,16 +160,16 @@ LTileElement >> initialize [
 
 	super initialize.
 	self size: 100 asPoint.
+	self zIndex: 10.
 	self addEventHandlerOn: BlClickEvent do: [ :anEvent |
 		anEvent
 			ifPrimary: [ self tile board movePlayerTo: self tile ]
 			secondary: [
 				self tile isAccessible
 					ifTrue: [ self tile board do: [ :t | t accessible: false ] ]
-					ifFalse: [
+					ifFalse: [ "self parent children do: [ :t | t updateBackgroundRepresentation ]"
 						self tile board do: [ :t | t accessible: false ].
-						self tile tagAccessibleNeighbors ]
-				"self parent children do: [ :t | t updateBackgroundRepresentation ]" ]
+						self tile tagAccessibleNeighbors ] ]
 			middle: [  ]
 			other: [  ] ]
 ]

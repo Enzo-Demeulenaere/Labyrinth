@@ -123,6 +123,23 @@ shape := BlElement new
 ]
 
 { #category : #'as yet unclassified' }
+LBoardElement >> animationDirectionIsVertical: directionBoolean toTheEnd: endBoolean [
+
+	| animationDirection |
+	animationDirection := 0 @ 0.
+	directionBoolean
+		ifTrue: [
+			animationDirection setX: 0 setY: 1.
+			endBoolean ifFalse: [
+				animationDirection setX: 0 setY: -1 ]. ]
+		ifFalse: [
+			animationDirection setX: 1 setY: 0.
+			endBoolean ifFalse: [
+				animationDirection setX: -1 setY: 0 ]. ].
+	^ animationDirection 
+]
+
+{ #category : #'as yet unclassified' }
 LBoardElement >> arrowVertical: directionBoolean at: aNumber toTheEnd: endBoolean [
 
 	| arrow form |
@@ -140,16 +157,39 @@ LBoardElement >> arrowVertical: directionBoolean at: aNumber toTheEnd: endBoolea
 		         size: 100 asPoint;
 		         background: form;
 		         addEventHandlerOn: BlClickEvent do: [
+			         | line animationDirection sequentialAnimation |
 			         self board
 				         insertAt: aNumber
 				         isVertical: directionBoolean
 				         toTheEnd: endBoolean.
+			         line := self
+				                 getLineAt: aNumber
+				                 isVertical: directionBoolean
+				                 toTheEnd: endBoolean.
+			         animationDirection := self
+				                               animationDirectionIsVertical:
+					                               directionBoolean
+				                               toTheEnd: endBoolean.
+			         sequentialAnimation := self
+				                                sequentialAnimationOnLine: line
+				                                withArrow: arrow
+				                                direction: animationDirection.
+
+			         self addAnimation: (sequentialAnimation onFinishedDo: [
+							          self
+								          updateLineVertical: directionBoolean
+								          at: aNumber
+								          toTheEnd: endBoolean.
+							          self hideArrows.
+							          self board game enterMovePhase ])
+
+			         "self translateExtraToArrow: arrow positionInSpace.
 			         self
 				         updateLineVertical: directionBoolean
 				         at: aNumber
 				         toTheEnd: endBoolean.
 			         self hideArrows.
-			         self board game enterMovePhase ].
+			         self board game enterMovePhase" ].
 
 	^ arrow
 ]
@@ -206,6 +246,25 @@ LBoardElement >> game: aLGame [
 
 	game := aLGame.
 	aLGame board: self board.
+]
+
+{ #category : #'as yet unclassified' }
+LBoardElement >> getLineAt: aNumber isVertical: directionBoolean toTheEnd: endBoolean [
+
+	directionBoolean
+		ifTrue: [
+			| column |
+			column := tiles children select: [ :e |
+				          e boardPosition x = aNumber ].
+			endBoolean ifFalse: [
+				column := column reverse. ].
+			^ column ]
+		ifFalse: [
+			| row |
+			row := tiles children select: [ :e | e boardPosition y = aNumber ].
+			endBoolean ifFalse: [
+				row := row reverse. ].
+			^ row]
 ]
 
 { #category : #'as yet unclassified' }
@@ -360,6 +419,70 @@ LBoardElement >> initializeTiles [
 ]
 
 { #category : #'as yet unclassified' }
+LBoardElement >> parallelIdentityAnimation: line [
+
+	| elements animation parallelAnimation |
+	elements := line asOrderedCollection
+		            add: self extraTileElement;
+		            yourself.
+
+	animation := BlNumberTransition new
+		             from: 0;
+		             to: 1;
+		             duration: 0.5 seconds;
+		             onStepDo: [ :value :target |
+			             value > 0.5 ifTrue: [
+					             target transformation:
+							             BlElementIdentityTransformation uniqueInstance ] ].
+
+	parallelAnimation := BlParallelAnimation withAll:
+		                     (elements collect: [ :e |
+			                      | reset |
+			                      reset := animation copy.
+			                      reset target: e.
+			                      reset ]).
+
+	^ parallelAnimation
+]
+
+{ #category : #'as yet unclassified' }
+LBoardElement >> parallelTranslateAnimationOnLine: line direction: animationDirection [
+
+	|elements animation parallelAnimation|
+	elements := line asOrderedCollection add: self extraTileElement; yourself.
+	
+	animation := (BlTransformAnimation translate: animationDirection * self extraTileElement width) duration: 2 seconds.
+	
+	parallelAnimation := BlParallelAnimation withAll: ( elements collect: [ :e | 
+|anim|
+anim := animation copy.
+anim target: e.
+anim ] ).
+
+	^ parallelAnimation 
+]
+
+{ #category : #'as yet unclassified' }
+LBoardElement >> sequentialAnimationOnLine: line withArrow: arrow direction: animationDirection [
+
+	| translateExtra parallelTranslate translateNewExtra parallelIdentity sequentialAnimation |
+	translateExtra := self translateExtraToArrowAnimation: arrow.
+	parallelTranslate := self
+		                     parallelTranslateAnimationOnLine: line
+		                     direction: animationDirection.
+	translateNewExtra := self translateNewExtraAnimation: line last direction: animationDirection .
+	parallelIdentity := self parallelIdentityAnimation: line.
+
+	sequentialAnimation := BlSequentialAnimation new addAll: {
+			                       translateExtra.
+			                       parallelTranslate.
+			                       translateNewExtra.
+			                       parallelIdentity }.
+
+	^ sequentialAnimation
+]
+
+{ #category : #'as yet unclassified' }
 LBoardElement >> showArrows [
 
 	self arrows do: [ :e | e visibility: BlVisibilityVisible new ]
@@ -372,19 +495,51 @@ LBoardElement >> tiles [
 ]
 
 { #category : #'as yet unclassified' }
+LBoardElement >> translateExtraToArrowAnimation: anObject [
+
+	| translation |
+	"self extraTileElement zIndex: 2."
+	translation := (BlTransformAnimation translate:
+			                anObject positionInSpace
+			                - self extraTileElement positionInSpace)
+		               easing: BlQuinticInterpolator new;
+		               duration: 1.5 seconds;
+		               target: self extraTileElement.
+	^ translation
+]
+
+{ #category : #'as yet unclassified' }
 LBoardElement >> translateLine: anOrderedCollection [
 
 	| line extraTile |
 	line := anOrderedCollection.
 	extraTile := extraTileElement tile.
 	extraTileElement tile: line last tile.
-	
-	line size to: 2 by: -1 do: [ :i |
-		|tileElt prevTileElt|
+
+	"line size to: 2 by: -1 do: [ :i |
+		| tileElt prevTileElt |
 		tileElt := line at: i.
-		prevTileElt := line at: i-1.
+		prevTileElt := line at: i - 1.
 		tileElt tile: prevTileElt tile ].
-	(line at: 1) tile: extraTile.
+	(line at: 1) tile: extraTile"
+	
+	line do: [ :each | each tile: (self board grid at: each boardPosition) ]
+]
+
+{ #category : #'as yet unclassified' }
+LBoardElement >> translateNewExtraAnimation: newExtra direction: animationDirection [
+
+	| animation |
+	newExtra zIndex: 2.
+	animation := (BlTransformAnimation translate:
+			              self extraTileElement positionInSpace
+			              - newExtra positionInSpace
+			- animationDirection )
+		             easing: BlQuinticInterpolator new;
+		             duration: 1.5 seconds;
+		             target: newExtra.
+
+	^ animation
 ]
 
 { #category : #'as yet unclassified' }
@@ -395,11 +550,15 @@ LBoardElement >> updateLineVertical: directionBoolean at: aNumber toTheEnd: endB
 			| column |
 			column := tiles children select: [ :e |
 				          e boardPosition x = aNumber ].
-			endBoolean ifFalse: [ column := column reverse ].
-			self translateLine: column ]
+			endBoolean ifFalse: [
+				column := column reverse.].
+			self translateLine: column
+			"self translateLine: column inDirection: animationDirection" ]
 		ifFalse: [
 			| row |
 			row := tiles children select: [ :e | e boardPosition y = aNumber ].
-			endBoolean ifFalse: [ row := row reverse ].
-			self translateLine: row ]
+			endBoolean ifFalse: [
+				row := row reverse. ].
+			self translateLine: row
+			"self translateLine: row inDirection: animationDirection" ]
 ]
