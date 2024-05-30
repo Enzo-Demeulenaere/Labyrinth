@@ -130,13 +130,11 @@ LBoardElement >> animationDirectionIsVertical: directionBoolean toTheEnd: endBoo
 	directionBoolean
 		ifTrue: [
 			animationDirection setX: 0 setY: 1.
-			endBoolean ifFalse: [
-				animationDirection setX: 0 setY: -1 ]. ]
+			endBoolean ifFalse: [ animationDirection setX: 0 setY: -1 ] ]
 		ifFalse: [
 			animationDirection setX: 1 setY: 0.
-			endBoolean ifFalse: [
-				animationDirection setX: -1 setY: 0 ]. ].
-	^ animationDirection 
+			endBoolean ifFalse: [ animationDirection setX: -1 setY: 0 ] ].
+	^ animationDirection * self extraTileElement width
 ]
 
 { #category : #'as yet unclassified' }
@@ -307,6 +305,7 @@ LBoardElement >> initializeBoardWithArrows [
 	| container |
 	container := BlElement new
 		             background: Color transparent;
+						clipChildren: false;
 		             layout: (BlGridLayout new horizontal columnCount: 9);
 		             position: 400 @ 0;
 		             size: 900 asPoint.
@@ -405,6 +404,8 @@ LBoardElement >> initializeTiles [
 
 	tiles := BlElement new
 		         background: Color transparent;
+		         clipChildren: false;
+		zIndex: 5;
 		         layout: (BlGridLayout horizontal columnCount: 7);
 		         constraintsDo: [ :c |
 			         c horizontal fitContent.
@@ -448,18 +449,23 @@ LBoardElement >> parallelIdentityAnimation: line [
 { #category : #'as yet unclassified' }
 LBoardElement >> parallelTranslateAnimationOnLine: line direction: animationDirection [
 
-	|elements animation parallelAnimation|
-	elements := line asOrderedCollection add: self extraTileElement; yourself.
-	
-	animation := (BlTransformAnimation translate: animationDirection * self extraTileElement width) duration: 2 seconds.
-	
-	parallelAnimation := BlParallelAnimation withAll: ( elements collect: [ :e | 
-|anim|
-anim := animation copy.
-anim target: e.
-anim ] ).
+	| elements animation parallelAnimation |
+	elements := line asOrderedCollection
+		            add: self extraTileElement;
+		            yourself.
 
-	^ parallelAnimation 
+	animation := (BlTransformAnimation translate:
+		              animationDirection)
+		             duration: 2 seconds.
+
+	parallelAnimation := BlParallelAnimation withAll:
+		                     (elements collect: [ :e |
+			                      | anim |
+			                      anim := animation copy.
+			                      anim target: e.
+			                      anim ]).
+
+	^ parallelAnimation
 ]
 
 { #category : #'as yet unclassified' }
@@ -470,14 +476,15 @@ LBoardElement >> sequentialAnimationOnLine: line withArrow: arrow direction: ani
 	parallelTranslate := self
 		                     parallelTranslateAnimationOnLine: line
 		                     direction: animationDirection.
-	translateNewExtra := self translateNewExtraAnimation: line last direction: animationDirection .
+	translateNewExtra := self
+		                     translateNewExtraAnimation: line last
+		                     direction: animationDirection.
 	parallelIdentity := self parallelIdentityAnimation: line.
 
 	sequentialAnimation := BlSequentialAnimation new addAll: {
 			                       translateExtra.
 			                       parallelTranslate.
-			                       translateNewExtra.
-			                       parallelIdentity }.
+			                       translateNewExtra. parallelIdentity }.
 
 	^ sequentialAnimation
 ]
@@ -530,14 +537,14 @@ LBoardElement >> translateLine: anOrderedCollection [
 LBoardElement >> translateNewExtraAnimation: newExtra direction: animationDirection [
 
 	| animation |
-	newExtra zIndex: 2.
+	newExtra zIndex: 15.
 	animation := (BlTransformAnimation translate:
 			              self extraTileElement positionInSpace
-			              - newExtra positionInSpace
-			- animationDirection )
+			              - newExtra positionInSpace - animationDirection)
 		             easing: BlQuinticInterpolator new;
 		             duration: 1.5 seconds;
-		             target: newExtra.
+		             target: newExtra;
+		             onFinishedDo: [ newExtra zIndex: 10 ]. "- animationDirection"
 
 	^ animation
 ]
