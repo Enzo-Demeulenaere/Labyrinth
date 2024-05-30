@@ -420,33 +420,6 @@ LBoardElement >> initializeTiles [
 ]
 
 { #category : #'as yet unclassified' }
-LBoardElement >> parallelIdentityAnimation: line [
-
-	| elements animation parallelAnimation |
-	elements := line asOrderedCollection
-		            add: self extraTileElement;
-		            yourself.
-
-	animation := BlNumberTransition new
-		             from: 0;
-		             to: 1;
-		             duration: 0.5 seconds;
-		             onStepDo: [ :value :target |
-			             value > 0.5 ifTrue: [
-					             target transformation:
-							             BlElementIdentityTransformation uniqueInstance ] ].
-
-	parallelAnimation := BlParallelAnimation withAll:
-		                     (elements collect: [ :e |
-			                      | reset |
-			                      reset := animation copy.
-			                      reset target: e.
-			                      reset ]).
-
-	^ parallelAnimation
-]
-
-{ #category : #'as yet unclassified' }
 LBoardElement >> parallelTranslateAnimationOnLine: line direction: animationDirection [
 
 	| elements animation parallelAnimation |
@@ -454,9 +427,8 @@ LBoardElement >> parallelTranslateAnimationOnLine: line direction: animationDire
 		            add: self extraTileElement;
 		            yourself.
 
-	animation := (BlTransformAnimation translate:
-		              animationDirection)
-		             duration: 2 seconds.
+	animation := (BlTransformAnimation translate: animationDirection)
+		             duration: 1 seconds.
 
 	parallelAnimation := BlParallelAnimation withAll:
 		                     (elements collect: [ :e |
@@ -479,12 +451,19 @@ LBoardElement >> sequentialAnimationOnLine: line withArrow: arrow direction: ani
 	translateNewExtra := self
 		                     translateNewExtraAnimation: line last
 		                     direction: animationDirection.
-	parallelIdentity := self parallelIdentityAnimation: line.
 
-	sequentialAnimation := BlSequentialAnimation new addAll: {
-			                       translateExtra.
-			                       parallelTranslate.
-			                       translateNewExtra. parallelIdentity }.
+	sequentialAnimation := (BlSequentialAnimation new addAll: {
+			                        translateExtra.
+			                        parallelTranslate.
+			                        translateNewExtra}) onFinishedDo: [
+		                       | elements |
+		                       elements := line asOrderedCollection
+			                                   add: self extraTileElement;
+			                                   yourself.
+		                       elements do: [ :e |
+			                       e transformation:
+				                       BlElementIdentityTransformation
+					                       uniqueInstance ] ].
 
 	^ sequentialAnimation
 ]
