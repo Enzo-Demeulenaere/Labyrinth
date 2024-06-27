@@ -49,10 +49,8 @@ LBoardElement class >> open [
 
 { #category : #'as yet unclassified' }
 LBoardElement class >> rotateLeftArrowElement [
-	"<script>"
 
 	| annulus arrow border container |
-	
 	border := BlBorder paint: Color lightGray width: 2.
 	annulus := BlElement new
 		           background: Color lightGreen;
@@ -77,16 +75,11 @@ LBoardElement class >> rotateLeftArrowElement [
 	arrow position: 50 @ 62.
 	arrow transformDo: [ :t | t rotateBy: 45 ].
 
-
 	container := BlElement new size: 100 asPoint.
 
 	container addChild: annulus.
 	container addChild: arrow.
 
-	"container childrenDo: [ :each |
-		each addEventHandlerOn: BlClickEvent do: [ each inspect ] ]."
-
-	"container openInSpace."
 	^ container
 ]
 
@@ -151,43 +144,18 @@ LBoardElement >> arrowVertical: directionBoolean at: aNumber toTheEnd: endBoolea
 			form := endBoolean
 				        ifTrue: [ form rotateBy: #left centerAt: 50 asPoint ]
 				        ifFalse: [ form rotateBy: #right centerAt: 50 asPoint ] ].
+
 	arrow := BlElement new
 		         size: 100 asPoint;
 		         background: form;
 		         addEventHandlerOn: BlClickEvent do: [
-			         | line animationDirection sequentialAnimation |
-			         self board
-				         insertAt: aNumber
-				         isVertical: directionBoolean
-				         toTheEnd: endBoolean.
-			         line := self
-				                 getLineAt: aNumber
-				                 isVertical: directionBoolean
-				                 toTheEnd: endBoolean.
-			         animationDirection := self
-				                               animationDirectionIsVertical:
-					                               directionBoolean
-				                               toTheEnd: endBoolean.
-			         sequentialAnimation := self
-				                                sequentialAnimationOnLine: line
-				                                withArrow: arrow
-				                                direction: animationDirection.
 
-			         self addAnimation: (sequentialAnimation onFinishedDo: [
-							          self
-								          updateLineVertical: directionBoolean
-								          at: aNumber
-								          toTheEnd: endBoolean.
-							          self hideArrows.
-							          self board game enterMovePhase ])
-
-			         "self translateExtraToArrow: arrow positionInSpace.
-			         self
-				         updateLineVertical: directionBoolean
-				         at: aNumber
-				         toTheEnd: endBoolean.
 			         self hideArrows.
-			         self board game enterMovePhase" ].
+			         self addAnimation: (self
+						          sequentialAnimationForArrow: arrow
+						          number: aNumber
+						          direction: directionBoolean
+						          end: endBoolean) ].
 
 	^ arrow
 ]
@@ -351,26 +319,29 @@ LBoardElement >> initializeBoardWithArrows [
 { #category : #initialization }
 LBoardElement >> initializeExtraTile [
 
-	| rotateLeft rotateRight |
 	extraTileElement := LTileElement tile: board extraTile.
 
 	extraTileElement position: 150 @ 400.
 	self addChild: extraTileElement.
+	self initializeRotateButtons.
+]
 
+{ #category : #initialization }
+LBoardElement >> initializeRotateButtons [
+
+	| rotateLeft rotateRight |
 	rotateLeft := self class rotateLeftArrowElement.
 	rotateLeft position: 150 @ 450.
 
 	rotateRight := self class rotateRightArrowElement.
 	rotateRight position: 150 @ 350.
 
-	rotateLeft childrenDo: [ :each |
-		each
-			addEventHandlerOn: BlClickEvent
-			do: [ extraTileElement addAnimation: self rotateLeftAnimation ] ].
-
-	rotateRight childrenDo: [ :each |
-		each addEventHandlerOn: BlClickEvent do: [
-			extraTileElement addAnimation: self rotateRightAnimation  ] ].
+	rotateLeft
+		addEventHandlerOn: BlClickEvent
+		do: [ extraTileElement addAnimation: self rotateLeftAnimation ].
+	rotateRight
+		addEventHandlerOn: BlClickEvent
+		do: [ extraTileElement addAnimation: self rotateRightAnimation ].
 
 	self addChild: rotateLeft.
 	self addChild: rotateRight
@@ -439,6 +410,65 @@ LBoardElement >> rotateRightAnimation [
 			BlElementIdentityTransformation uniqueInstance.
 		extraTileElement rotateRight ].
 	^ anim
+]
+
+{ #category : #'as yet unclassified' }
+LBoardElement >> sequentialAnimationForArrow: arrow number: aNumber direction: directionBoolean end: endBoolean [
+
+	| line animationDirection sequentialAnimation |
+	self board
+		insertAt: aNumber
+		isVertical: directionBoolean
+		toTheEnd: endBoolean.
+	line := self
+		        getLineAt: aNumber
+		        isVertical: directionBoolean
+		        toTheEnd: endBoolean.
+	animationDirection := self
+		                      animationDirectionIsVertical: directionBoolean
+		                      toTheEnd: endBoolean.
+	sequentialAnimation := self
+		                       sequentialAnimationOnLine: line
+		                       withArrow: arrow
+		                       direction: animationDirection.
+
+	sequentialAnimation onFinishedDo: [
+							          self
+								          updateLineVertical: directionBoolean
+								          at: aNumber
+								          toTheEnd: endBoolean.
+							          self board game enterMovePhase ].
+
+	^ sequentialAnimation
+]
+
+{ #category : #'as yet unclassified' }
+LBoardElement >> sequentialAnimationForParameters: aCollection [
+
+	| number directionBoolean endBoolean line animationDirection sequentialAnimation arrow |
+	arrow := aCollection removeFirst.
+	number := aCollection removeFirst.
+	directionBoolean := aCollection removeFirst.
+	endBoolean := aCollection removeFirst.
+
+
+	self board
+		insertAt: number
+		isVertical: directionBoolean
+		toTheEnd: endBoolean.
+	line := self
+		        getLineAt: number
+		        isVertical: directionBoolean
+		        toTheEnd: endBoolean.
+	animationDirection := self
+		                      animationDirectionIsVertical: directionBoolean
+		                      toTheEnd: endBoolean.
+	sequentialAnimation := self
+		                       sequentialAnimationOnLine: line
+		                       withArrow: arrow
+		                       direction: animationDirection.
+		
+	^ sequentialAnimation 
 ]
 
 { #category : #'as yet unclassified' }
