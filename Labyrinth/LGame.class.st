@@ -14,7 +14,7 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-LGame class >> gameTest2Players [
+LGame class >> game2Players [
 
 	| game |
 	game := self new.
@@ -27,7 +27,7 @@ LGame class >> gameTest2Players [
 ]
 
 { #category : #'as yet unclassified' }
-LGame class >> gameTest3Players [
+LGame class >> game3Players [
 
 	| game |
 	game := self new.
@@ -41,7 +41,7 @@ LGame class >> gameTest3Players [
 ]
 
 { #category : #'as yet unclassified' }
-LGame class >> gameTest4Players [
+LGame class >> game4Players [
 
 	| game |
 	game := self new.
@@ -55,35 +55,43 @@ LGame class >> gameTest4Players [
 	^ game
 ]
 
-{ #category : #'instance creation' }
-LGame class >> open [
+{ #category : #'as yet unclassified' }
+LGame class >> nbPlayers: aNumber [
 
 	<script>
-	| game elt board space |
+	| game elt board space gameElement |
+	space := BlSpace new extent: 1800 @ 1200.
 	board := LBoard new.
 	elt := LBoardElement new board: board.
-	game := self new boardElement: elt.
-	game board: board.
 
-	game launchGame.
+	aNumber = 2 ifTrue: [ game := self game2Players ].
+	aNumber = 3 ifTrue: [ game := self game3Players ].
+	aNumber = 4 ifTrue: [ game := self game4Players ].
 
-	space := BlSpace new extent: 1500 @ 1000.
+	game boardElement constraintsDo: [ :c |
+		c linear vertical alignCenter ].
+
+	gameElement := game gameElement.
+
+	space root addChild: gameElement.
+	space show.
+	"space := BlSpace new extent: 1500 @ 1000.
 	space root addChild: elt.
 	space root clipChildren: false.
 
-	space show.
+	space show."
 
-	^ game 
+	^ game
 ]
 
 { #category : #'instance creation' }
-LGame class >> openTest2Players [
+LGame class >> open2Players [
 
 	<script>
 	| game space gameElement |
 	space := BlSpace new extent: 1800 @ 1200.
 
-	game := self gameTest2Players.
+	game := self game2Players.
 
 	game boardElement constraintsDo: [ :c |
 		c linear vertical alignCenter ].
@@ -97,13 +105,13 @@ LGame class >> openTest2Players [
 ]
 
 { #category : #'instance creation' }
-LGame class >> openTest3Players [
+LGame class >> open3Players [
 
 	<script>
 	| game space gameElement |
 	space := BlSpace new extent: 1800 @ 1200.
 
-	game := self gameTest3Players.
+	game := self game3Players.
 
 	game boardElement constraintsDo: [ :c |
 		c linear vertical alignCenter ].
@@ -116,13 +124,13 @@ LGame class >> openTest3Players [
 ]
 
 { #category : #'instance creation' }
-LGame class >> openTest4Players [
+LGame class >> open4Players [
 
 	<script>
 	| game space gameElement |
 	space := BlSpace new extent: 1800 @ 1200.
 
-	game := self gameTest4Players.
+	game := self game4Players.
 
 	game boardElement constraintsDo: [ :c |
 		c linear vertical alignCenter ].
@@ -151,6 +159,7 @@ LGame >> activePlayer: aLPlayer [
 LGame >> addPlayer: aLPlayer [
 
 	players add: aLPlayer.
+	aLPlayer id: players size.
 	aLPlayer game: self
 ]
 
@@ -185,7 +194,7 @@ LGame >> distributeCards [
 
 	| nbPlayers nbCardsPerPlayer |
 	nbPlayers := self players size.
-	nbCardsPerPlayer := 1.
+	nbCardsPerPlayer := 3.
 	"nbCardsPerPlayer := self board cards size / nbPlayers."
 
 	self players do: [ :p |
@@ -212,8 +221,7 @@ LGame >> enterTilePhase [
 LGame >> finish [
 
 	finished := true.
-	self gameElement finish.
-	"things at the end"
+	self gameElement finish
 ]
 
 { #category : #accessing }

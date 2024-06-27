@@ -246,14 +246,12 @@ LTileElement >> tile: aLTile [
 { #category : #'change reporting' }
 LTileElement >> updateBackgroundRepresentation [
 
-	| form path formElt config spawn |
+	| form path formElt config |
 	formElt := (LRessources wallIcon scaledIntoFormOfSize: 100 asPoint)
 		           asElement.
 	config := tile configuration.
 	path := self elementForConfig: config.
 	formElt addChild: path.
-	spawn := self spawnRepresentation.
-	spawn ifNotNil: [ formElt addChild: spawn ].
 	tile players ifNotEmpty: [ :players |
 		| playerContainer |
 		playerContainer := BlElement new
@@ -265,10 +263,10 @@ LTileElement >> updateBackgroundRepresentation [
 				       size: 40 asPoint;
 				       position: 30 asPoint;
 				       geometry: BlCircleGeometry new.
-			p name = 'A' ifTrue: [ elt background: (Color blue alpha: 0.4) ].
-			p name = 'B' ifTrue: [ elt background: (Color red alpha: 0.4) ].
-			p name = 'C' ifTrue: [ elt background: (Color yellow alpha: 0.4) ].
-			p name = 'D' ifTrue: [ elt background: (Color green alpha: 0.4) ].
+			p id = 1 ifTrue: [ elt background: (Color blue alpha: 0.4) ].
+			p id = 2 ifTrue: [ elt background: (Color red alpha: 0.4) ].
+			p id = 3 ifTrue: [ elt background: (Color yellow alpha: 0.4) ].
+			p id = 4 ifTrue: [ elt background: (Color green alpha: 0.4) ].
 			playerContainer addChild: elt ].
 		formElt addChild: playerContainer ].
 	tile item ifNotNil: [ :item |

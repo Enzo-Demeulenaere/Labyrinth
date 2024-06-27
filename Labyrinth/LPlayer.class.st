@@ -5,7 +5,8 @@ Class {
 		'cards',
 		'name',
 		'tile',
-		'game'
+		'game',
+		'id'
 	],
 	#category : #'Labyrinth-Model'
 }
@@ -32,7 +33,7 @@ LPlayer >> cards: aCollection [
 { #category : #'as yet unclassified' }
 LPlayer >> checkItem [
 
-	self cards ifEmpty: [ "check si c'est le spawn" ].
+	self cards ifEmpty: [ self error: 'This player has no more cards' ].
 	self tile item ifNotNil: [ :item |
 		item = self cards first item ifTrue: [ self nextItem ] ]
 ]
@@ -49,11 +50,23 @@ LPlayer >> game: aLGame [
 	game := aLGame 
 ]
 
+{ #category : #accessing }
+LPlayer >> id [ 
+	^ id
+]
+
+{ #category : #accessing }
+LPlayer >> id: aNumber [
+
+	id := aNumber 
+]
+
 { #category : #initialization }
 LPlayer >> initialize [
 
 	super initialize.
-	cards := OrderedCollection new
+	cards := OrderedCollection new.
+	id := 0
 ]
 
 { #category : #accessing }
@@ -75,7 +88,6 @@ LPlayer >> nextItem [
 	card := self cards first.
 	card disappear.
 	self cards removeFirst.
-	"temporary before checking spawn point of the player"
 	self cards ifEmpty: [ self game finish ]
 ]
 

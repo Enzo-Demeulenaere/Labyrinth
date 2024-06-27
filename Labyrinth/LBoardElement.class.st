@@ -348,12 +348,6 @@ LBoardElement >> initializeBoardWithArrows [
 	self addChild: container
 ]
 
-{ #category : #'as yet unclassified' }
-LBoardElement >> initializeCards [
-
-	
-]
-
 { #category : #initialization }
 LBoardElement >> initializeExtraTile [
 
@@ -370,14 +364,24 @@ LBoardElement >> initializeExtraTile [
 	rotateRight position: 150 @ 350.
 
 	rotateLeft childrenDo: [ :each |
-		each
-			addEventHandlerOn: BlClickEvent
-			do: [ extraTileElement rotateLeft ] ].
+		each addEventHandlerOn: BlClickEvent do: [
+			| anim |
+			anim := (BlTransformAnimation rotate: -90) duration: 1 second.
+			extraTileElement addAnimation: (anim onFinishedDo: [
+					 extraTileElement transformation:
+						 BlElementIdentityTransformation uniqueInstance.
+					 extraTileElement rotateLeft ])
+			"extraTileElement rotateLeft ]" ] ].
 
 	rotateRight childrenDo: [ :each |
-		each
-			addEventHandlerOn: BlClickEvent
-			do: [ extraTileElement rotateRight ] ].
+		each addEventHandlerOn: BlClickEvent do: [
+			| anim |
+			anim := (BlTransformAnimation new transformDo: [ :t |
+				         t rotateBy: 90 ]) duration: 1 second.
+			extraTileElement addAnimation: (anim onFinishedDo: [
+					 extraTileElement transformation:
+						 BlElementIdentityTransformation uniqueInstance.
+					 extraTileElement rotateRight ]) ] ].
 
 	"rotateLeft := BlTextElement new
 		              size: 100 @ 20;
@@ -443,7 +447,7 @@ LBoardElement >> parallelTranslateAnimationOnLine: line direction: animationDire
 { #category : #'as yet unclassified' }
 LBoardElement >> sequentialAnimationOnLine: line withArrow: arrow direction: animationDirection [
 
-	| translateExtra parallelTranslate translateNewExtra parallelIdentity sequentialAnimation |
+	| translateExtra parallelTranslate translateNewExtra sequentialAnimation |
 	translateExtra := self translateExtraToArrowAnimation: arrow.
 	parallelTranslate := self
 		                     parallelTranslateAnimationOnLine: line
@@ -455,7 +459,7 @@ LBoardElement >> sequentialAnimationOnLine: line withArrow: arrow direction: ani
 	sequentialAnimation := (BlSequentialAnimation new addAll: {
 			                        translateExtra.
 			                        parallelTranslate.
-			                        translateNewExtra}) onFinishedDo: [
+			                        translateNewExtra }; yourself) onFinishedDo: [
 		                       | elements |
 		                       elements := line asOrderedCollection
 			                                   add: self extraTileElement;
