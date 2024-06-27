@@ -194,7 +194,7 @@ LGame >> distributeCards [
 
 	| nbPlayers nbCardsPerPlayer |
 	nbPlayers := self players size.
-	nbCardsPerPlayer := 3.
+	nbCardsPerPlayer := 1.
 	"nbCardsPerPlayer := self board cards size / nbPlayers."
 
 	self players do: [ :p |

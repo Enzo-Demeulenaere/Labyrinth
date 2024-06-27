@@ -5,7 +5,9 @@ Class {
 		'game',
 		'boardElement',
 		'scoreContainerElement',
-		'scoreElements'
+		'scoreElements',
+		'playerColors',
+		'playerBorderColors'
 	],
 	#category : #'Labyrinth-UI'
 }
@@ -20,6 +22,18 @@ LGameElement >> boardElement [
 LGameElement >> boardElement: aLBoardElement [
 
 	boardElement := aLBoardElement.
+]
+
+{ #category : #'as yet unclassified' }
+LGameElement >> borderForID: aPlayerID [ 
+
+	^ self playerBorderColors at: aPlayerID 
+]
+
+{ #category : #'as yet unclassified' }
+LGameElement >> colorForID: aPlayerID [
+
+	^ self playerColors at: aPlayerID
 ]
 
 { #category : #initialization }
@@ -65,12 +79,10 @@ LGameElement >> initialize [
 	self constraintsDo: [ :c |
 		c vertical matchParent.
 		c horizontal matchParent ].
-	self background: (BlLinearGradientPaint horizontal
-			 from: Color white
-			 to: Color lightOrange).
+	self background: Color orange muchLighter.
 	self layout: BlLinearLayout horizontal.
-	self initializeBoardElement
-	"self initializeScoreElements"
+	self initializeBoardElement.
+	self initializePlayerColors.
 ]
 
 { #category : #initialization }
@@ -78,6 +90,39 @@ LGameElement >> initializeBoardElement [
 
 	self boardElement: (LBoardElement new board: LBoard new).
 	self addChild: self boardElement
+]
+
+{ #category : #initialization }
+LGameElement >> initializePlayerColors [
+
+	playerColors := Dictionary new
+		                at: 1 put: (Color blue alpha: 0.4);
+		                at: 2 put: (Color red alpha: 0.4);
+		                at: 3 put: (Color yellow alpha: 0.4);
+		                at: 4 put: (Color green alpha: 0.4);
+							yourself.
+	playerBorderColors := Dictionary new
+		                at: 1 put: (BlBorderBuilder new
+				                 paint: Color blue;
+				                 width: 4;
+				                 dashArray: { 0. 60. 30. 100 };
+				                 build);
+		                at: 2 put: (BlBorderBuilder new
+			                 width: 4;
+			                 paint: Color red;
+			                 dashArray: { 0. 90. 30. 100 };
+			                 build);
+		                at: 3 put: (BlBorderBuilder new
+			                 width: 4;
+			                 paint: Color yellow;
+			                 dashArray: { 0. 30. 30. 100 };
+			                 build);
+		                at: 4 put: (BlBorderBuilder new
+			                 width: 4;
+			                 paint: Color green;
+			                 dashArray: { 30. 100 };
+			                 build);
+		                yourself
 ]
 
 { #category : #'as yet unclassified' }
@@ -107,6 +152,30 @@ LGameElement >> initializeScoreElements [
 		scoreElements add: elt.
 		scoreContainerElement addChild: elt ].
 	frame addChild: scoreContainerElement
+]
+
+{ #category : #accessing }
+LGameElement >> playerBorderColors [ 
+
+	^ playerBorderColors 
+]
+
+{ #category : #accessing }
+LGameElement >> playerBorderColors: aDictionary [
+
+	playerBorderColors:= aDictionary 
+]
+
+{ #category : #accessing }
+LGameElement >> playerColors [ 
+
+	^ playerColors 
+]
+
+{ #category : #accessing }
+LGameElement >> playerColors: aDictionary [
+
+	playerColors := aDictionary 
 ]
 
 { #category : #accessing }

@@ -50,6 +50,12 @@ LPlayer >> game: aLGame [
 	game := aLGame 
 ]
 
+{ #category : #'as yet unclassified' }
+LPlayer >> gameElement [
+
+	^ self game gameElement
+]
+
 { #category : #accessing }
 LPlayer >> id [ 
 	^ id
@@ -89,6 +95,18 @@ LPlayer >> nextItem [
 	card disappear.
 	self cards removeFirst.
 	self cards ifEmpty: [ self game finish ]
+]
+
+{ #category : #'as yet unclassified' }
+LPlayer >> playerBorderColor [
+
+	^ self gameElement borderForID: self id
+]
+
+{ #category : #'as yet unclassified' }
+LPlayer >> playerColor [
+
+	^ self gameElement colorForID: self id
 ]
 
 { #category : #accessing }

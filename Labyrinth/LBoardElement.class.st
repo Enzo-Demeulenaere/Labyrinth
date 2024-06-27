@@ -364,40 +364,13 @@ LBoardElement >> initializeExtraTile [
 	rotateRight position: 150 @ 350.
 
 	rotateLeft childrenDo: [ :each |
-		each addEventHandlerOn: BlClickEvent do: [
-			| anim |
-			anim := (BlTransformAnimation rotate: -90) duration: 1 second.
-			extraTileElement addAnimation: (anim onFinishedDo: [
-					 extraTileElement transformation:
-						 BlElementIdentityTransformation uniqueInstance.
-					 extraTileElement rotateLeft ])
-			"extraTileElement rotateLeft ]" ] ].
+		each
+			addEventHandlerOn: BlClickEvent
+			do: [ extraTileElement addAnimation: self rotateLeftAnimation ] ].
 
 	rotateRight childrenDo: [ :each |
 		each addEventHandlerOn: BlClickEvent do: [
-			| anim |
-			anim := (BlTransformAnimation new transformDo: [ :t |
-				         t rotateBy: 90 ]) duration: 1 second.
-			extraTileElement addAnimation: (anim onFinishedDo: [
-					 extraTileElement transformation:
-						 BlElementIdentityTransformation uniqueInstance.
-					 extraTileElement rotateRight ]) ] ].
-
-	"rotateLeft := BlTextElement new
-		              size: 100 @ 20;
-		              background: Color veryLightGray;
-		              border: (BlBorder paint: Color black width: 1);
-		              text: 'Rotate left' asRopedText;
-		              position: 150 @ 505.
-	rotateRight := BlTextElement new
-		               size: 100 @ 20;
-		               background: Color veryLightGray;
-		               border: (BlBorder paint: Color black width: 1);
-		               text: 'Rotate right' asRopedText;
-		               position: 150 @ 535."
-	"rotateRight
-		addEventHandlerOn: BlClickEvent
-		do: [ extraTileElement rotateRight ]."
+			extraTileElement addAnimation: self rotateRightAnimation  ] ].
 
 	self addChild: rotateLeft.
 	self addChild: rotateRight
@@ -432,7 +405,7 @@ LBoardElement >> parallelTranslateAnimationOnLine: line direction: animationDire
 		            yourself.
 
 	animation := (BlTransformAnimation translate: animationDirection)
-		             duration: 1 seconds.
+		             duration: 0.5 seconds.
 
 	parallelAnimation := BlParallelAnimation withAll:
 		                     (elements collect: [ :e |
@@ -442,6 +415,30 @@ LBoardElement >> parallelTranslateAnimationOnLine: line direction: animationDire
 			                      anim ]).
 
 	^ parallelAnimation
+]
+
+{ #category : #'as yet unclassified' }
+LBoardElement >> rotateLeftAnimation [
+
+	| anim |
+	anim := (BlTransformAnimation rotate: -90) duration: 0.5 second.
+	anim onFinishedDo: [
+		extraTileElement transformation:
+			BlElementIdentityTransformation uniqueInstance.
+		extraTileElement rotateLeft ].
+	^ anim
+]
+
+{ #category : #'as yet unclassified' }
+LBoardElement >> rotateRightAnimation [
+
+	| anim |
+	anim := (BlTransformAnimation rotate: 90) duration: 0.5 second.
+	anim onFinishedDo: [
+		extraTileElement transformation:
+			BlElementIdentityTransformation uniqueInstance.
+		extraTileElement rotateRight ].
+	^ anim
 ]
 
 { #category : #'as yet unclassified' }
@@ -493,7 +490,7 @@ LBoardElement >> translateExtraToArrowAnimation: anObject [
 			                anObject positionInSpace
 			                - self extraTileElement positionInSpace)
 		               easing: BlQuinticInterpolator new;
-		               duration: 1.5 seconds;
+		               duration: 1 seconds;
 		               target: self extraTileElement.
 	^ translation
 ]
@@ -525,7 +522,7 @@ LBoardElement >> translateNewExtraAnimation: newExtra direction: animationDirect
 			              self extraTileElement positionInSpace
 			              - newExtra positionInSpace - animationDirection)
 		             easing: BlQuinticInterpolator new;
-		             duration: 1.5 seconds;
+		             duration: 1 seconds;
 		             target: newExtra;
 		             onFinishedDo: [ newExtra zIndex: 10 ]. "- animationDirection"
 

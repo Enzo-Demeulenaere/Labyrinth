@@ -51,7 +51,7 @@ LScoreElement >> initializeNameTag [
 	| nameTag name |
 	nameTag := BlElement new
 		           size: 300 @ 30;
-		           background: Color lightBlue;
+		           background: self player playerColor;
 		           geometry:
 			           (BlRoundedRectangleGeometry cornerRadii:
 					            (BlCornerRadii new
@@ -80,5 +80,5 @@ LScoreElement >> player: aLPlayer [
 
 	player := aLPlayer.
 	self initializeNameTag.
-	self initializeCards.
+	self initializeCards
 ]

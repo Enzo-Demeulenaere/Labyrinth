@@ -204,30 +204,6 @@ LTileElement >> rotateRightTimes: aNumber [
 	self rotateRightTimes: aNumber - 1
 ]
 
-{ #category : #'as yet unclassified' }
-LTileElement >> spawnRepresentation [
-
-	| elt |
-	elt := BlElement new
-		       size: 30 asPoint;
-		       position: 35 asPoint;
-		       border: (BlBorder paint: Color black width: 2);
-		       geometry: BlCircleGeometry new.
-	self boardPosition = (1 @ 1) ifTrue: [
-		elt background: Color blue.
-		^ elt ].
-	self boardPosition = (7 @ 1) ifTrue: [
-		elt background: Color red.
-		^ elt ].
-	self boardPosition = (1 @ 7) ifTrue: [
-		elt background: Color yellow.
-		^ elt ].
-	self boardPosition = (7 @ 7) ifTrue: [
-		elt background: Color green.
-		^ elt ].
-	^ nil
-]
-
 { #category : #accessing }
 LTileElement >> tile [ 
 
@@ -260,15 +236,15 @@ LTileElement >> updateBackgroundRepresentation [
 		players do: [ :p |
 			| elt |
 			elt := BlElement new
-				       size: 40 asPoint;
-				       position: 30 asPoint;
-				       geometry: BlCircleGeometry new.
-			p id = 1 ifTrue: [ elt background: (Color blue alpha: 0.4) ].
-			p id = 2 ifTrue: [ elt background: (Color red alpha: 0.4) ].
-			p id = 3 ifTrue: [ elt background: (Color yellow alpha: 0.4) ].
-			p id = 4 ifTrue: [ elt background: (Color green alpha: 0.4) ].
+				       size: 35 asPoint;
+				       position: 32.5 asPoint;
+				       outskirts: BlOutskirts outside;
+				       geometry: BlCircleGeometry new;
+				       background: p playerColor;
+				       border: p playerBorderColor.
 			playerContainer addChild: elt ].
 		formElt addChild: playerContainer ].
+	
 	tile item ifNotNil: [ :item |
 		| itemElt |
 		itemElt := (item icon scaledIntoFormOfSize: 40 asPoint) asElement.
