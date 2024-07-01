@@ -1,24 +1,26 @@
 Class {
-	#name : #LCardElement,
-	#superclass : #BlElement,
+	#name : 'LCardElement',
+	#superclass : 'BlElement',
 	#instVars : [
 		'card'
 	],
-	#category : #'Labyrinth-UI'
+	#category : 'Labyrinth-UI',
+	#package : 'Labyrinth',
+	#tag : 'UI'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LCardElement class >> card: aLCard [ 
 
 	^ self new card: aLCard 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LCardElement >> card [ 
 	^ card
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LCardElement >> card: aLCard [
 
 	card := aLCard.
@@ -26,13 +28,13 @@ LCardElement >> card: aLCard [
 	self displayItem
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 LCardElement >> disappear [ 
 
 	self visibility: BlVisibility gone.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 LCardElement >> displayItem [
 
 	| form item |
@@ -46,7 +48,7 @@ LCardElement >> displayItem [
 	self addChild: item
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LCardElement >> initialize [
 
 	super initialize.

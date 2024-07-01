@@ -1,15 +1,17 @@
 Class {
-	#name : #LScoreElement,
-	#superclass : #BlElement,
+	#name : 'LScoreElement',
+	#superclass : 'BlElement',
 	#instVars : [
 		'player',
 		'nameTag',
 		'highlightAnimation'
 	],
-	#category : #'Labyrinth-UI'
+	#category : 'Labyrinth-UI',
+	#package : 'Labyrinth',
+	#tag : 'UI'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 LScoreElement >> defaultHighlightAnimation [
 
 	^ BlColorTransition new
@@ -22,14 +24,14 @@ LScoreElement >> defaultHighlightAnimation [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 LScoreElement >> highlight [
 
 	highlightAnimation := self defaultHighlightAnimation copy.
 	self addAnimation: self highlightAnimation 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LScoreElement >> highlightAnimation [
 
 	^ highlightAnimation "ifNil: [
@@ -41,7 +43,7 @@ LScoreElement >> highlightAnimation [
 				                        self nameTag background: c ] ]"
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LScoreElement >> initialize [
 
 	super initialize.
@@ -54,7 +56,7 @@ LScoreElement >> initialize [
 			c frame horizontal alignRight ].
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 LScoreElement >> initializeCards [
 
 	| cardsSlot |
@@ -79,7 +81,7 @@ LScoreElement >> initializeCards [
 	self addChild: cardsSlot
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 LScoreElement >> initializeNameTag [
 
 	| name |
@@ -103,19 +105,19 @@ LScoreElement >> initializeNameTag [
 	self addChild: nameTag
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LScoreElement >> nameTag [
 
 	^ nameTag
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LScoreElement >> player [ 
 
 	^ player
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LScoreElement >> player: aLPlayer [
 
 	player := aLPlayer.
@@ -123,7 +125,7 @@ LScoreElement >> player: aLPlayer [
 	self initializeCards
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 LScoreElement >> stopHighlighting [
 
 	self highlightAnimation loops: 0

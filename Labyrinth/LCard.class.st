@@ -1,44 +1,46 @@
 Class {
-	#name : #LCard,
-	#superclass : #Object,
+	#name : 'LCard',
+	#superclass : 'Object',
 	#instVars : [
 		'item',
 		'cardElement'
 	],
-	#category : #'Labyrinth-Model'
+	#category : 'Labyrinth-Model',
+	#package : 'Labyrinth',
+	#tag : 'Model'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LCard class >> item: aLItem [ 
 
 	^ self new item: aLItem 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LCard >> cardElement [ 
 
 	^ cardElement
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LCard >> cardElement: aLCardElement [
 
 	cardElement := aLCardElement 
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 LCard >> disappear [ 
 
 	self cardElement disappear.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LCard >> item [ 
 
 	^ item
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LCard >> item: anItem [ 
 
 	item := anItem 

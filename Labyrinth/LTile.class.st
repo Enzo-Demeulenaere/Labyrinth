@@ -1,6 +1,6 @@
 Class {
-	#name : #LTile,
-	#superclass : #MygAbstractBox,
+	#name : 'LTile',
+	#superclass : 'MygAbstractBox',
 	#instVars : [
 		'item',
 		'players',
@@ -11,10 +11,12 @@ Class {
 	#classVars : [
 		'Configurations'
 	],
-	#category : #'Labyrinth-Model'
+	#category : 'Labyrinth-Model',
+	#package : 'Labyrinth',
+	#tag : 'Model'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 LTile class >> corner [
 	"20, corners are covering the bottom right angle by default"
 
@@ -29,7 +31,7 @@ LTile class >> corner [
 	^ self new directions: dict
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 LTile class >> cornerPath [
 
 	| w h shape |
@@ -50,7 +52,7 @@ LTile class >> cornerPath [
 	^ shape
 ]
 
-{ #category : #'class initialization' }
+{ #category : 'class initialization' }
 LTile class >> initialize [
 
 	Configurations := {
@@ -66,7 +68,7 @@ LTile class >> initialize [
 		                  (14 -> 'TS') } asDictionary.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 LTile class >> straight [
 	"12, straight are vertical by default"
 
@@ -81,7 +83,7 @@ LTile class >> straight [
 	^ self new directions: dict
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 LTile class >> straightPath [
 
 	| w h shape |
@@ -101,7 +103,7 @@ LTile class >> straightPath [
 	^ shape
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 LTile class >> tShaped [
 	"18,  tShaped are 'facing' east by default"
 
@@ -116,7 +118,7 @@ LTile class >> tShaped [
 	^ self new directions: dict
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 LTile class >> tShapedPath [
 
 	| w h shape |
@@ -140,21 +142,21 @@ LTile class >> tShapedPath [
 	^ shape
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 LTile >> accessible: aBoolean [
 
 	accessible := aBoolean.
 	self tileElement updateBackgroundRepresentation.
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 LTile >> addPlayer: aLPlayer [
 
 	self players add: aLPlayer.
 	self tileElement updateBackgroundRepresentation 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LTile >> configuration [
 
 	| value |
@@ -167,25 +169,25 @@ LTile >> configuration [
 	^ Configurations at: value ifAbsent: $*
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LTile >> configurations [
 
 	^ Configurations
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LTile >> directions [ 
 
 	^ directions 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LTile >> directions: aDictionary [
 
 	directions := aDictionary 
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 LTile >> initialize [
 
 	super initialize.
@@ -193,37 +195,37 @@ LTile >> initialize [
 	players := OrderedCollection new.
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 LTile >> isAccessible [ 
 	
 	^ accessible 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LTile >> item [ 
 
 	^ item
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LTile >> item: anItem [ 
 
 	item := anItem 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LTile >> players [ 
 
 	^ players 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LTile >> players: aCollection [ 
 
 	players := aCollection 
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 LTile >> printOn: aStream [
 
 	aStream 
@@ -232,7 +234,7 @@ LTile >> printOn: aStream [
 	nextPut: $|
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 LTile >> randomRotate [ 
 
 	| nbRotate |
@@ -240,14 +242,14 @@ LTile >> randomRotate [
 	self rotateLeftTimes: nbRotate.
 ]
 
-{ #category : #removing }
+{ #category : 'removing' }
 LTile >> removePlayer: aLPlayer [
 
 	self players remove: aLPlayer.
 	self tileElement updateBackgroundRepresentation
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 LTile >> rotateLeft [
 
 	| north |
@@ -264,7 +266,7 @@ LTile >> rotateLeft [
 	self directions at: CpWestDirection  put: north
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 LTile >> rotateLeftTimes: aNumber [ 
 
 	aNumber = 0 ifTrue: [ ^ self ].
@@ -272,7 +274,7 @@ LTile >> rotateLeftTimes: aNumber [
 	self rotateLeftTimes: aNumber -1
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 LTile >> rotateRight [ 
 
 	|north|
@@ -283,7 +285,7 @@ LTile >> rotateRight [
 	self directions at: CpEastDirection put: north.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 LTile >> rotateRightTimes: aNumber [ 
 
 	aNumber = 0 ifTrue: [ ^ self ].
@@ -291,7 +293,7 @@ LTile >> rotateRightTimes: aNumber [
 	self rotateRightTimes: aNumber -1
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 LTile >> tagAccessibleNeighbors [
 
 	self isAccessible ifTrue: [ ^ self ].
@@ -299,7 +301,7 @@ LTile >> tagAccessibleNeighbors [
 	self tagNeighbors
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 LTile >> tagNeighbors [
 
 	| neighbor |
@@ -333,13 +335,13 @@ LTile >> tagNeighbors [
 				neighbor tagAccessibleNeighbors ] ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LTile >> tileElement [ 
 
 	^ tileElement
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LTile >> tileElement: aLTileElement [
 
 	tileElement := aLTileElement 

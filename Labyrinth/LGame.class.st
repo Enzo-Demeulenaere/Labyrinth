@@ -1,6 +1,6 @@
 Class {
-	#name : #LGame,
-	#superclass : #Object,
+	#name : 'LGame',
+	#superclass : 'Object',
 	#instVars : [
 		'players',
 		'finished',
@@ -10,10 +10,12 @@ Class {
 		'scoreElements',
 		'gameElement'
 	],
-	#category : #'Labyrinth-Model'
+	#category : 'Labyrinth-Model',
+	#package : 'Labyrinth',
+	#tag : 'Model'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 LGame class >> game2Players [
 
 	| game |
@@ -26,7 +28,7 @@ LGame class >> game2Players [
 	^ game
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 LGame class >> game3Players [
 
 	| game |
@@ -40,7 +42,7 @@ LGame class >> game3Players [
 	^ game
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 LGame class >> game4Players [
 
 	| game |
@@ -55,7 +57,7 @@ LGame class >> game4Players [
 	^ game
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 LGame class >> nbPlayers: aNumber [
 
 	<script>
@@ -84,7 +86,7 @@ LGame class >> nbPlayers: aNumber [
 	^ game
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 LGame class >> open2Players [
 
 	<script>
@@ -104,7 +106,7 @@ LGame class >> open2Players [
 
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 LGame class >> open3Players [
 
 	<script>
@@ -123,7 +125,7 @@ LGame class >> open3Players [
 	^ self
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 LGame class >> open4Players [
 
 	<script>
@@ -143,13 +145,13 @@ LGame class >> open4Players [
 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LGame >> activePlayer [ 
 
 	^ activePlayer 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LGame >> activePlayer: aLPlayer [
 	activePlayer ifNotNil: [ :e | e scoreElement stopHighlighting ].
 
@@ -157,7 +159,7 @@ LGame >> activePlayer: aLPlayer [
 	activePlayer scoreElement highlight
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 LGame >> addPlayer: aLPlayer [
 
 	players add: aLPlayer.
@@ -165,33 +167,33 @@ LGame >> addPlayer: aLPlayer [
 	aLPlayer game: self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LGame >> board [ 
 
 	^ board
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LGame >> board: aLBoard [
 
 	board := aLBoard.
 	aLBoard game: self.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LGame >> boardElement [ 
 
 	^ boardElement 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LGame >> boardElement: aLBoardElement [
 
 	boardElement := aLBoardElement.
 	aLBoardElement game: self.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 LGame >> distributeCards [
 
 	| nbPlayers nbCardsPerPlayer |
@@ -205,47 +207,47 @@ LGame >> distributeCards [
 		p cards: cards asOrderedCollection ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 LGame >> enterMovePhase [
 
 	self board mapAccessibleTilesForPlayer: self activePlayer.
 	"the accessible tiles are now highlighted and we wait for the player to click on one of those to check for picking the item before moving to the next player"
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 LGame >> enterTilePhase [
 
 	self boardElement showClickables 
 	"arrows and buttons are now showing, when an arrow is clicked on, they disappear and we enter the movePhase"
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 LGame >> finish [
 
 	finished := true.
 	self gameElement finish
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LGame >> finished: aBoolean [ 
 
 	finished := aBoolean 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LGame >> gameElement [ 
 
 	^ gameElement 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LGame >> gameElement: aLGameElement [
 
 	gameElement := aLGameElement.
 	aLGameElement game: self
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 LGame >> initialize [
 
 	super initialize.
@@ -253,19 +255,19 @@ LGame >> initialize [
 	self gameElement: LGameElement new.
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 LGame >> initializeScoreElements [
 
 	self gameElement initializeScoreElements 
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 LGame >> isFinished [ 
 
 	^ finished 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 LGame >> launchGame [
 
 	self players ifEmpty: [
@@ -277,7 +279,7 @@ LGame >> launchGame [
 	self activePlayer: self players first.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 LGame >> nextPlayer [
 
 	| link nextLink |
@@ -287,7 +289,7 @@ LGame >> nextPlayer [
 	self enterTilePhase 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 LGame >> placePlayers [
 
 	self players first tile: (self board grid at: 1 @ 1).
@@ -299,7 +301,7 @@ LGame >> placePlayers [
 		(self players at: 4) tile: (self board grid at: 7 @ 7) ]
 ]
 
-{ #category : #execution }
+{ #category : 'execution' }
 LGame >> play [
 
 	self distributeCards.
@@ -307,25 +309,25 @@ LGame >> play [
 	self enterTilePhase
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LGame >> players [ 
 
 	^ players 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LGame >> players: aSet [
 
 	players := aSet
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LGame >> scoreElement [ 
 
 	^ scoreElements 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LGame >> scoreElement: aBlElement [
 
 	scoreElements := aBlElement 

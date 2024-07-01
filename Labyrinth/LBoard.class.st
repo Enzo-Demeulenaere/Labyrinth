@@ -1,6 +1,6 @@
 Class {
-	#name : #LBoard,
-	#superclass : #MygBoard,
+	#name : 'LBoard',
+	#superclass : 'MygBoard',
 	#instVars : [
 		'extraTile',
 		'cards',
@@ -8,34 +8,36 @@ Class {
 		'game',
 		'boardElement'
 	],
-	#category : #'Labyrinth-Model'
+	#category : 'Labyrinth-Model',
+	#package : 'Labyrinth',
+	#tag : 'Model'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LBoard >> boardElement [ 
 
 	^ boardElement
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LBoard >> boardElement: aLBoardElement [
 
 	boardElement := aLBoardElement 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LBoard >> cards [ 
 
 	^ cards
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LBoard >> cards: aCollection [ 
 
 	cards := aCollection 
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 LBoard >> do: aBlock [ 
 
 	grid do: aBlock 
@@ -43,31 +45,31 @@ LBoard >> do: aBlock [
 	
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LBoard >> extraTile [ 
 
 	^ extraTile 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LBoard >> extraTile: aLTile [ 
 
 	extraTile := aLTile 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LBoard >> game [ 
 
 	^ game
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LBoard >> game: aLGame [
 
 	game := aLGame 
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 LBoard >> initialize [
 
 	super initialize.
@@ -76,14 +78,14 @@ LBoard >> initialize [
 	self initializeTiles
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 LBoard >> initializeCards [
 
 	cards := items collect: [ :item | LCard item: item ].
 	cards shuffle.
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 LBoard >> initializeFixedTiles [
 	"legend is like such: 
 	
@@ -139,7 +141,7 @@ LBoard >> initializeFixedTiles [
 	self grid: array
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 LBoard >> initializeItems [
 
 	items := OrderedCollection new.
@@ -170,7 +172,7 @@ LBoard >> initializeItems [
 			(LItem name: 'viking') }
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 LBoard >> initializeRemainingTiles [
 	"encore 16 corner, 12 straight, 14 tShaped"
 
@@ -193,7 +195,7 @@ LBoard >> initializeRemainingTiles [
 	self extraTile board: self
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 LBoard >> initializeTiles [
 
 	self initializeFixedTiles.
@@ -201,7 +203,7 @@ LBoard >> initializeTiles [
 	self configureGrid: self grid.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LBoard >> insertAt: anIndex isVertical: verticalBoolean toTheEnd: endBoolean [
 
 	verticalBoolean ifTrue: [ 
@@ -209,7 +211,7 @@ LBoard >> insertAt: anIndex isVertical: verticalBoolean toTheEnd: endBoolean [
 		self insertAtRow: anIndex toTheEnd: endBoolean  ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 LBoard >> insertAtColumn: anIndex toTheEnd: endBoolean [
 	"endBoolean True means Top to Bottom"
 
@@ -220,20 +222,22 @@ LBoard >> insertAtColumn: anIndex toTheEnd: endBoolean [
 		ifTrue: [
 			col last players ifNotEmpty: [ :players |
 				col last players: OrderedCollection new.
-				extraTile players addAll: players ].
+				players do: [ :each | each tile: extraTile ].
+				"extraTile players addAll: players" ].
 			col addFirst: extraTile.
 			extraTile := col removeLast ]
 		ifFalse: [
 			col first players ifNotEmpty: [ :players |
 				col first players: OrderedCollection new.
-				extraTile players addAll: players ].
+				players do: [ :each | each tile: extraTile ].
+				"extraTile players addAll: players" ].
 			col add: extraTile.
 			extraTile := col removeFirst ].
 
 	grid atColumn: anIndex put: col
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 LBoard >> insertAtRow: anIndex toTheEnd: endBoolean [
 	"endBoolean True means Left to Right"
 
@@ -244,26 +248,28 @@ LBoard >> insertAtRow: anIndex toTheEnd: endBoolean [
 		ifTrue: [
 			row last players ifNotEmpty: [ :players |
 				row last players: OrderedCollection new.
-				extraTile players addAll: players ].
+				players do: [ :each | each tile: extraTile ].
+				"extraTile players addAll: players" ].
 			row addFirst: extraTile.
 			extraTile := row removeLast ]
 		ifFalse: [
 			row first players ifNotEmpty: [ :players |
 				row first players: OrderedCollection new.
-				extraTile players addAll: players ].
+				players do: [ :each | each tile: extraTile ].
+				"extraTile players addAll: players" ].
 			row add: extraTile.
 			extraTile := row removeFirst ].
 
 	grid atRow: anIndex put: row
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LBoard >> items [ 
 
 	^ items
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 LBoard >> mapAccessibleTilesForPlayer: aLPlayer [
 
 	| initialTile |
@@ -271,7 +277,7 @@ LBoard >> mapAccessibleTilesForPlayer: aLPlayer [
 	initialTile tagAccessibleNeighbors
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 LBoard >> movePlayerTo: aLTile [
 
 	| player |
