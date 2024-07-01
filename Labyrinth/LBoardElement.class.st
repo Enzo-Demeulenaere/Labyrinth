@@ -512,13 +512,6 @@ LBoardElement >> translateLine: anOrderedCollection [
 	line := anOrderedCollection.
 	extraTile := extraTileElement tile.
 	extraTileElement tile: line last tile.
-
-	"line size to: 2 by: -1 do: [ :i |
-		| tileElt prevTileElt |
-		tileElt := line at: i.
-		prevTileElt := line at: i - 1.
-		tileElt tile: prevTileElt tile ].
-	(line at: 1) tile: extraTile"
 	
 	line do: [ :each | each tile: (self board grid at: each boardPosition) ]
 ]

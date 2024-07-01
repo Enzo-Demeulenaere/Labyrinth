@@ -59,9 +59,11 @@ LScoreElement >> initialize [
 { #category : 'initialization' }
 LScoreElement >> initializeCards [
 
-	| cardsSlot |
+	| cardsSlot width|
+	"width somehow hardcoded to fit the number of cards per player"
+	width := self player cards size * 20 + 120.
 	cardsSlot := BlElement new
-		             size: 300 @ 120;
+		             size: width @ 120;
 		             background: Color veryVeryLightGray;
 		             geometry:
 			             (BlRoundedRectangleGeometry cornerRadii:
@@ -75,7 +77,7 @@ LScoreElement >> initializeCards [
 	self player cards size to: 1 by: -1 do: [ :i |
 		| cardElt |
 		cardElt := LCardElement card: (self player cards at: i).
-		cardElt position: i - 1 * 20 + 40 @ 10.
+		cardElt position: i - 1 * 20 + 20 @ 10.
 		cardsSlot addChild: cardElt ].
 
 	self addChild: cardsSlot
@@ -84,9 +86,11 @@ LScoreElement >> initializeCards [
 { #category : 'initialization' }
 LScoreElement >> initializeNameTag [
 
-	| name |
+	| name width|
+	"width somehow hardcoded to fit the number of cards per player"
+	width := self player cards size * 20 + 120.
 	nameTag := BlElement new
-		           size: 300 @ 30;
+		           size: width @ 30;
 		           background: self player playerColor;
 		           geometry:
 			           (BlRoundedRectangleGeometry cornerRadii:

@@ -153,7 +153,7 @@ LTile >> accessible: aBoolean [
 LTile >> addPlayer: aLPlayer [
 
 	self players add: aLPlayer.
-	self tileElement updateBackgroundRepresentation 
+	self tileElement updateBackgroundRepresentation
 ]
 
 { #category : 'accessing' }
