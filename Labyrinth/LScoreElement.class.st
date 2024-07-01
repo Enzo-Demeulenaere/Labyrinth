@@ -2,10 +2,44 @@ Class {
 	#name : #LScoreElement,
 	#superclass : #BlElement,
 	#instVars : [
-		'player'
+		'player',
+		'nameTag',
+		'highlightAnimation'
 	],
 	#category : #'Labyrinth-UI'
 }
+
+{ #category : #'as yet unclassified' }
+LScoreElement >> defaultHighlightAnimation [
+
+	^ BlColorTransition new
+		                      from: Color white;
+		                      to: self player playerColor;
+		                      duration: 1 seconds;
+		                      onStepDo: [ :c | self nameTag background: c ];
+		                      beInfinite;
+		                      yourself.
+
+]
+
+{ #category : #'as yet unclassified' }
+LScoreElement >> highlight [
+
+	highlightAnimation := self defaultHighlightAnimation copy.
+	self addAnimation: self highlightAnimation 
+]
+
+{ #category : #accessing }
+LScoreElement >> highlightAnimation [
+
+	^ highlightAnimation "ifNil: [
+		  highlightAnimation := BlColorTransition new
+			                        from: Color white;
+			                        to: self player playerColor;
+			                        duration: 1 seconds;
+			                        onStepDo: [ :c |
+				                        self nameTag background: c ] ]"
+]
 
 { #category : #accessing }
 LScoreElement >> initialize [
@@ -17,7 +51,7 @@ LScoreElement >> initialize [
 			c margin: (BlInsets top: 30 bottom: 30).
 			c vertical fitContent.
 			c horizontal fitContent.
-			c frame horizontal alignRight ]
+			c frame horizontal alignRight ].
 ]
 
 { #category : #initialization }
@@ -48,7 +82,7 @@ LScoreElement >> initializeCards [
 { #category : #initialization }
 LScoreElement >> initializeNameTag [
 
-	| nameTag name |
+	| name |
 	nameTag := BlElement new
 		           size: 300 @ 30;
 		           background: self player playerColor;
@@ -70,6 +104,12 @@ LScoreElement >> initializeNameTag [
 ]
 
 { #category : #accessing }
+LScoreElement >> nameTag [
+
+	^ nameTag
+]
+
+{ #category : #accessing }
 LScoreElement >> player [ 
 
 	^ player
@@ -81,4 +121,10 @@ LScoreElement >> player: aLPlayer [
 	player := aLPlayer.
 	self initializeNameTag.
 	self initializeCards
+]
+
+{ #category : #'as yet unclassified' }
+LScoreElement >> stopHighlighting [
+
+	self highlightAnimation loops: 0
 ]

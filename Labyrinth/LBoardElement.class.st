@@ -6,7 +6,8 @@ Class {
 		'arrows',
 		'tiles',
 		'extraTileElement',
-		'game'
+		'game',
+		'buttons'
 	],
 	#category : #'Labyrinth-UI'
 }
@@ -149,8 +150,11 @@ LBoardElement >> arrowVertical: directionBoolean at: aNumber toTheEnd: endBoolea
 		         size: 100 asPoint;
 		         background: form;
 		         addEventHandlerOn: BlClickEvent do: [
-
-			         self hideArrows.
+			         self board
+				         insertAt: aNumber
+				         isVertical: directionBoolean
+				         toTheEnd: endBoolean.
+			         self hideClickables.
 			         self addAnimation: (self
 						          sequentialAnimationForArrow: arrow
 						          number: aNumber
@@ -179,8 +183,19 @@ LBoardElement >> board: aLBoard [
 	aLBoard boardElement: self.
 	self initializeTiles.
 	self initializeExtraTile.
-	self initializeBoardWithArrows.
-	"self initializeCards"
+	self initializeBoardWithArrows
+]
+
+{ #category : #accessing }
+LBoardElement >> buttons [
+
+	^ buttons
+]
+
+{ #category : #accessing }
+LBoardElement >> buttons: aCollection [
+
+	buttons := aCollection 
 ]
 
 { #category : #accessing }
@@ -234,10 +249,10 @@ LBoardElement >> getLineAt: aNumber isVertical: directionBoolean toTheEnd: endBo
 ]
 
 { #category : #'as yet unclassified' }
-LBoardElement >> hideArrows [ 
+LBoardElement >> hideClickables [
 
-	self arrows do: [ :e |
-		e visibility: BlVisibilityHidden new ]
+	self arrows do: [ :e | e visibility: BlVisibility hidden ].
+	self buttons do: [ :e | e visibility: BlVisibility hidden ]
 ]
 
 { #category : #initialization }
@@ -343,8 +358,9 @@ LBoardElement >> initializeRotateButtons [
 		addEventHandlerOn: BlClickEvent
 		do: [ extraTileElement addAnimation: self rotateRightAnimation ].
 
-	self addChild: rotateLeft.
-	self addChild: rotateRight
+	self buttons: { rotateLeft. rotateRight }.
+
+	self addChildren: self buttons
 ]
 
 { #category : #'as yet unclassified' }
@@ -370,16 +386,13 @@ LBoardElement >> initializeTiles [
 { #category : #'as yet unclassified' }
 LBoardElement >> parallelTranslateAnimationOnLine: line direction: animationDirection [
 
-	| elements animation parallelAnimation |
-	elements := line asOrderedCollection
-		            add: self extraTileElement;
-		            yourself.
+	| animation parallelAnimation |
 
 	animation := (BlTransformAnimation translate: animationDirection)
 		             duration: 0.5 seconds.
 
 	parallelAnimation := BlParallelAnimation withAll:
-		                     (elements collect: [ :e |
+		                     (line collect: [ :e |
 			                      | anim |
 			                      anim := animation copy.
 			                      anim target: e.
@@ -394,8 +407,7 @@ LBoardElement >> rotateLeftAnimation [
 	| anim |
 	anim := (BlTransformAnimation rotate: -90) duration: 0.5 second.
 	anim onFinishedDo: [
-		extraTileElement transformation:
-			BlElementIdentityTransformation uniqueInstance.
+		extraTileElement resetTransformation.
 		extraTileElement rotateLeft ].
 	^ anim
 ]
@@ -406,9 +418,7 @@ LBoardElement >> rotateRightAnimation [
 	| anim |
 	anim := (BlTransformAnimation rotate: 90) duration: 0.5 second.
 	anim onFinishedDo: [
-		extraTileElement transformation:
-			BlElementIdentityTransformation uniqueInstance.
-		extraTileElement rotateRight ].
+		extraTileElement resetTransformation. extraTileElement rotateRight ].
 	^ anim
 ]
 
@@ -416,14 +426,11 @@ LBoardElement >> rotateRightAnimation [
 LBoardElement >> sequentialAnimationForArrow: arrow number: aNumber direction: directionBoolean end: endBoolean [
 
 	| line animationDirection sequentialAnimation |
-	self board
-		insertAt: aNumber
-		isVertical: directionBoolean
-		toTheEnd: endBoolean.
 	line := self
 		        getLineAt: aNumber
 		        isVertical: directionBoolean
 		        toTheEnd: endBoolean.
+		
 	animationDirection := self
 		                      animationDirectionIsVertical: directionBoolean
 		                      toTheEnd: endBoolean.
@@ -433,76 +440,47 @@ LBoardElement >> sequentialAnimationForArrow: arrow number: aNumber direction: d
 		                       direction: animationDirection.
 
 	sequentialAnimation onFinishedDo: [
-							          self
-								          updateLineVertical: directionBoolean
-								          at: aNumber
-								          toTheEnd: endBoolean.
-							          self board game enterMovePhase ].
+		self
+			updateLineVertical: directionBoolean
+			at: aNumber
+			toTheEnd: endBoolean.
+		self board game enterMovePhase ].
 
 	^ sequentialAnimation
-]
-
-{ #category : #'as yet unclassified' }
-LBoardElement >> sequentialAnimationForParameters: aCollection [
-
-	| number directionBoolean endBoolean line animationDirection sequentialAnimation arrow |
-	arrow := aCollection removeFirst.
-	number := aCollection removeFirst.
-	directionBoolean := aCollection removeFirst.
-	endBoolean := aCollection removeFirst.
-
-
-	self board
-		insertAt: number
-		isVertical: directionBoolean
-		toTheEnd: endBoolean.
-	line := self
-		        getLineAt: number
-		        isVertical: directionBoolean
-		        toTheEnd: endBoolean.
-	animationDirection := self
-		                      animationDirectionIsVertical: directionBoolean
-		                      toTheEnd: endBoolean.
-	sequentialAnimation := self
-		                       sequentialAnimationOnLine: line
-		                       withArrow: arrow
-		                       direction: animationDirection.
-		
-	^ sequentialAnimation 
 ]
 
 { #category : #'as yet unclassified' }
 LBoardElement >> sequentialAnimationOnLine: line withArrow: arrow direction: animationDirection [
 
-	| translateExtra parallelTranslate translateNewExtra sequentialAnimation |
+	| translateExtra parallelTranslate translateNewExtra sequentialAnimation lineWithExtra|
+	lineWithExtra := line asOrderedCollection
+			                                   addFirst: self extraTileElement;
+			                                   yourself.
 	translateExtra := self translateExtraToArrowAnimation: arrow.
 	parallelTranslate := self
-		                     parallelTranslateAnimationOnLine: line
+		                     parallelTranslateAnimationOnLine: lineWithExtra
 		                     direction: animationDirection.
 	translateNewExtra := self
 		                     translateNewExtraAnimation: line last
 		                     direction: animationDirection.
 
-	sequentialAnimation := (BlSequentialAnimation new addAll: {
-			                        translateExtra.
-			                        parallelTranslate.
-			                        translateNewExtra }; yourself) onFinishedDo: [
-		                       | elements |
-		                       elements := line asOrderedCollection
-			                                   add: self extraTileElement;
-			                                   yourself.
-		                       elements do: [ :e |
-			                       e transformation:
-				                       BlElementIdentityTransformation
-					                       uniqueInstance ] ].
+	sequentialAnimation := (BlSequentialAnimation new
+		                        addAll: {
+				                        translateExtra.
+				                        parallelTranslate.
+				                        translateNewExtra };
+		                        yourself) onFinishedDo: [		                 
+		                       lineWithExtra do: [ :e |
+			                       e resetTransformation  ] ].
 
 	^ sequentialAnimation
 ]
 
 { #category : #'as yet unclassified' }
-LBoardElement >> showArrows [
+LBoardElement >> showClickables [
 
-	self arrows do: [ :e | e visibility: BlVisibilityVisible new ]
+	self arrows do: [ :e | e visibility: BlVisibility visible ].
+	self buttons do: [ :e | e visibility: BlVisibility visible ]
 ]
 
 { #category : #accessing }

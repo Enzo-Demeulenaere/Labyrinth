@@ -184,6 +184,12 @@ LGameElement >> scoreContainerElement [
 	^ scoreContainerElement 
 ]
 
+{ #category : #'as yet unclassified' }
+LGameElement >> scoreElementForID: aPlayerID [ 
+
+	^ self scoreElements ifNotNil: [ :e | e at: aPlayerID ]
+]
+
 { #category : #accessing }
 LGameElement >> scoreElements [
 

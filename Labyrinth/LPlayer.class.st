@@ -110,6 +110,12 @@ LPlayer >> playerColor [
 ]
 
 { #category : #accessing }
+LPlayer >> scoreElement [
+
+	^ self gameElement scoreElementForID: self id
+]
+
+{ #category : #accessing }
 LPlayer >> tile [ 
 
 	^ tile

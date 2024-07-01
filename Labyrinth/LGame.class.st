@@ -151,8 +151,10 @@ LGame >> activePlayer [
 
 { #category : #accessing }
 LGame >> activePlayer: aLPlayer [
+	activePlayer ifNotNil: [ :e | e scoreElement stopHighlighting ].
 
-	activePlayer := aLPlayer 
+	activePlayer := aLPlayer.
+	activePlayer scoreElement highlight
 ]
 
 { #category : #adding }
@@ -213,8 +215,8 @@ LGame >> enterMovePhase [
 { #category : #'as yet unclassified' }
 LGame >> enterTilePhase [
 
-	self boardElement showArrows
-	"arrows are now showing, when an arrows is clicked on, they disappear and we enter the movePhase"
+	self boardElement showClickables 
+	"arrows and buttons are now showing, when an arrow is clicked on, they disappear and we enter the movePhase"
 ]
 
 { #category : #initialization }
@@ -269,11 +271,10 @@ LGame >> launchGame [
 	self players ifEmpty: [
 		self notify: 'Impossible to launch a game with no players'.
 		^ self ].
-	self activePlayer: self players first.
 	self placePlayers.
 	self play.
 	self initializeScoreElements.
-
+	self activePlayer: self players first.
 ]
 
 { #category : #'as yet unclassified' }

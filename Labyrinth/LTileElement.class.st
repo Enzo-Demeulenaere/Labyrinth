@@ -174,6 +174,12 @@ LTileElement >> initialize [
 			other: [  ] ]
 ]
 
+{ #category : #initialization }
+LTileElement >> resetTransformation [ 
+
+	self transformation: BlElementIdentityTransformation uniqueInstance 
+]
+
 { #category : #'as yet unclassified' }
 LTileElement >> rotateLeft [
 
