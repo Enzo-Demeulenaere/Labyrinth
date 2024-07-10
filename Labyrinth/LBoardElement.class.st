@@ -1,6 +1,6 @@
 Class {
-	#name : 'LBoardElement',
-	#superclass : 'BlElement',
+	#name : #LBoardElement,
+	#superclass : #BlElement,
 	#instVars : [
 		'board',
 		'arrows',
@@ -9,12 +9,10 @@ Class {
 		'game',
 		'buttons'
 	],
-	#category : 'Labyrinth-UI',
-	#package : 'Labyrinth',
-	#tag : 'UI'
+	#category : #'Labyrinth-UI'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 LBoardElement class >> cardElement [
 
 	| elt |
@@ -31,7 +29,7 @@ LBoardElement class >> cardElement [
 	^ elt
 ]
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 LBoardElement class >> open [
 
 	<script>
@@ -50,7 +48,7 @@ LBoardElement class >> open [
 	^ elt
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 LBoardElement class >> rotateLeftArrowElement [
 
 	| annulus arrow border container |
@@ -86,7 +84,7 @@ LBoardElement class >> rotateLeftArrowElement [
 	^ container
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 LBoardElement class >> rotateRightArrowElement [
 
 	| container |
@@ -96,7 +94,7 @@ LBoardElement class >> rotateRightArrowElement [
 	^ container
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 LBoardElement class >> slideArrowForm [ 
 
 	| w h shape |
@@ -118,7 +116,7 @@ shape := BlElement new
 	^ shape asForm
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 LBoardElement >> animationDirectionIsVertical: directionBoolean toTheEnd: endBoolean [
 
 	| animationDirection |
@@ -133,7 +131,7 @@ LBoardElement >> animationDirectionIsVertical: directionBoolean toTheEnd: endBoo
 	^ animationDirection * self extraTileElement width
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 LBoardElement >> arrowVertical: directionBoolean at: aNumber toTheEnd: endBoolean [
 
 	| arrow form |
@@ -151,7 +149,7 @@ LBoardElement >> arrowVertical: directionBoolean at: aNumber toTheEnd: endBoolea
 	arrow := BlElement new
 		         size: 100 asPoint;
 		         background: form;
-		         addEventHandlerOn: BlClickEvent do: [
+		         addEventHandlerOn: BlClickEvent do: [ 
 			         self board
 				         insertAt: aNumber
 				         isVertical: directionBoolean
@@ -161,24 +159,24 @@ LBoardElement >> arrowVertical: directionBoolean at: aNumber toTheEnd: endBoolea
 						          sequentialAnimationForArrow: arrow
 						          number: aNumber
 						          direction: directionBoolean
-						          end: endBoolean) ].
+						          end: endBoolean) ]; yourself.
 
 	^ arrow
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 LBoardElement >> arrows [ 
 
 	^ arrows
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 LBoardElement >> board [ 
 
 	^ board
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 LBoardElement >> board: aLBoard [
 
 	board := aLBoard.
@@ -188,50 +186,50 @@ LBoardElement >> board: aLBoard [
 	self initializeBoardWithArrows
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 LBoardElement >> buttons [
 
 	^ buttons
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 LBoardElement >> buttons: aCollection [
 
 	buttons := aCollection 
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 LBoardElement >> extraTileElement [ 
 
 	^ extraTileElement 
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 LBoardElement >> extraTileElement: aLTile [
 
 	extraTileElement := aLTile
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 LBoardElement >> fillElement [
 
 	^ BlElement new background: Color transparent; size: 100 asPoint.
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 LBoardElement >> game [ 
 
 	^ game 
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 LBoardElement >> game: aLGame [
 
 	game := aLGame.
 	aLGame board: self board.
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 LBoardElement >> getLineAt: aNumber isVertical: directionBoolean toTheEnd: endBoolean [
 
 	directionBoolean
@@ -250,14 +248,14 @@ LBoardElement >> getLineAt: aNumber isVertical: directionBoolean toTheEnd: endBo
 			^ row]
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 LBoardElement >> hideClickables [
 
 	self arrows do: [ :e | e visibility: BlVisibility hidden ].
 	self buttons do: [ :e | e visibility: BlVisibility hidden ]
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 LBoardElement >> initialize [
 
 	super initialize.
@@ -267,24 +265,25 @@ LBoardElement >> initialize [
 		requestFocus
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 LBoardElement >> initializeArrows [
 
-	arrows := { self arrowVertical: true at: 2 toTheEnd: true. 
-	self arrowVertical: true at: 4 toTheEnd: true.
-	self arrowVertical: true at: 6 toTheEnd: true.
-	self arrowVertical: false at: 2 toTheEnd: true.
-	self arrowVertical: false at: 2 toTheEnd: false.
-	self arrowVertical: false at: 4 toTheEnd: true.
-	self arrowVertical: false at: 4 toTheEnd: false.
-	self arrowVertical: false at: 6 toTheEnd: true.
-	self arrowVertical: false at: 6 toTheEnd: false.
-	self arrowVertical: true at: 2 toTheEnd: false.
-	self arrowVertical: true at: 4 toTheEnd: false.
-	self arrowVertical: true at: 6 toTheEnd: false.}
+	arrows := {
+		          (self arrowVertical: true at: 2 toTheEnd: true).
+		          (self arrowVertical: true at: 4 toTheEnd: true).
+		          (self arrowVertical: true at: 6 toTheEnd: true).
+		          (self arrowVertical: false at: 2 toTheEnd: true).
+		          (self arrowVertical: false at: 2 toTheEnd: false).
+		          (self arrowVertical: false at: 4 toTheEnd: true).
+		          (self arrowVertical: false at: 4 toTheEnd: false).
+		          (self arrowVertical: false at: 6 toTheEnd: true).
+		          (self arrowVertical: false at: 6 toTheEnd: false).
+		          (self arrowVertical: true at: 2 toTheEnd: false).
+		          (self arrowVertical: true at: 4 toTheEnd: false).
+		          (self arrowVertical: true at: 6 toTheEnd: false) }.
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 LBoardElement >> initializeBoardWithArrows [
 
 	| container |
@@ -333,7 +332,7 @@ LBoardElement >> initializeBoardWithArrows [
 	self addChild: container
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 LBoardElement >> initializeExtraTile [
 
 	extraTileElement := LTileElement tile: board extraTile.
@@ -343,7 +342,7 @@ LBoardElement >> initializeExtraTile [
 	self initializeRotateButtons.
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 LBoardElement >> initializeRotateButtons [
 
 	| rotateLeft rotateRight |
@@ -365,13 +364,13 @@ LBoardElement >> initializeRotateButtons [
 	self addChildren: self buttons
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 LBoardElement >> initializeTiles [
 
 	tiles := BlElement new
 		         background: Color transparent;
 		         clipChildren: false;
-		zIndex: 5;
+		         zIndex: 5;
 		         layout: (BlGridLayout horizontal columnCount: 7);
 		         constraintsDo: [ :c |
 			         c horizontal fitContent.
@@ -385,7 +384,7 @@ LBoardElement >> initializeTiles [
 		tiles addChild: elt ]
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 LBoardElement >> parallelTranslateAnimationOnLine: line direction: animationDirection [
 
 	| animation parallelAnimation |
@@ -403,7 +402,7 @@ LBoardElement >> parallelTranslateAnimationOnLine: line direction: animationDire
 	^ parallelAnimation
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 LBoardElement >> rotateLeftAnimation [
 
 	| anim |
@@ -414,7 +413,7 @@ LBoardElement >> rotateLeftAnimation [
 	^ anim
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 LBoardElement >> rotateRightAnimation [
 
 	| anim |
@@ -424,7 +423,7 @@ LBoardElement >> rotateRightAnimation [
 	^ anim
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 LBoardElement >> sequentialAnimationForArrow: arrow number: aNumber direction: directionBoolean end: endBoolean [
 
 	| line animationDirection sequentialAnimation |
@@ -451,7 +450,7 @@ LBoardElement >> sequentialAnimationForArrow: arrow number: aNumber direction: d
 	^ sequentialAnimation
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 LBoardElement >> sequentialAnimationOnLine: line withArrow: arrow direction: animationDirection [
 
 	| translateExtra parallelTranslate translateNewExtra sequentialAnimation lineWithExtra|
@@ -478,20 +477,20 @@ LBoardElement >> sequentialAnimationOnLine: line withArrow: arrow direction: ani
 	^ sequentialAnimation
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 LBoardElement >> showClickables [
 
 	self arrows do: [ :e | e visibility: BlVisibility visible ].
 	self buttons do: [ :e | e visibility: BlVisibility visible ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 LBoardElement >> tiles [ 
 
 	^ tiles
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 LBoardElement >> translateExtraToArrowAnimation: anObject [
 
 	| translation |
@@ -505,7 +504,7 @@ LBoardElement >> translateExtraToArrowAnimation: anObject [
 	^ translation
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 LBoardElement >> translateLine: anOrderedCollection [
 
 	| line extraTile |
@@ -516,7 +515,7 @@ LBoardElement >> translateLine: anOrderedCollection [
 	line do: [ :each | each tile: (self board grid at: each boardPosition) ]
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 LBoardElement >> translateNewExtraAnimation: newExtra direction: animationDirection [
 
 	| animation |
@@ -532,7 +531,7 @@ LBoardElement >> translateNewExtraAnimation: newExtra direction: animationDirect
 	^ animation
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 LBoardElement >> updateLineVertical: directionBoolean at: aNumber toTheEnd: endBoolean [
 
 	directionBoolean

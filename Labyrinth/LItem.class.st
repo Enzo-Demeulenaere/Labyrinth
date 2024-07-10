@@ -1,27 +1,25 @@
 Class {
-	#name : 'LItem',
-	#superclass : 'Object',
+	#name : #LItem,
+	#superclass : #Object,
 	#instVars : [
 		'name'
 	],
-	#category : 'Labyrinth-Model',
-	#package : 'Labyrinth',
-	#tag : 'Model'
+	#category : 'Labyrinth-Model'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 LItem class >> name: aString [ 
 
 	^ self new name: aString
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 LItem >> icon [ 
 
 	^ LRessources perform: ((name , 'Icon') asSymbol)
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 LItem >> name [ 
 
 	^ name 
@@ -29,7 +27,7 @@ LItem >> name [
 
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 LItem >> name: aString [
 
 	name := aString

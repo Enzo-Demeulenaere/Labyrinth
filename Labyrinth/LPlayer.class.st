@@ -1,6 +1,6 @@
 Class {
-	#name : 'LPlayer',
-	#superclass : 'Object',
+	#name : #LPlayer,
+	#superclass : #Object,
 	#instVars : [
 		'cards',
 		'name',
@@ -8,31 +8,29 @@ Class {
 		'game',
 		'id'
 	],
-	#category : 'Labyrinth-Model',
-	#package : 'Labyrinth',
-	#tag : 'Model'
+	#category : 'Labyrinth-Model'
 }
 
-{ #category : 'testing' }
+{ #category : #testing }
 LPlayer >> canAccessTo: aLTile [
 
 	self tile board mapAccessibleTilesForPlayer: self.
 	^ aLTile isAccessible 
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 LPlayer >> cards [ 
 
 	^ cards 
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 LPlayer >> cards: aCollection [ 
 
 	cards := aCollection 
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 LPlayer >> checkItem [
 
 	self cards ifEmpty: [ self error: 'This player has no more cards' ].
@@ -40,36 +38,36 @@ LPlayer >> checkItem [
 		item = self cards first item ifTrue: [ self nextItem ] ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 LPlayer >> game [ 
 
 	^ game
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 LPlayer >> game: aLGame [
 
 	game := aLGame 
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 LPlayer >> gameElement [
 
 	^ self game gameElement
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 LPlayer >> id [ 
 	^ id
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 LPlayer >> id: aNumber [
 
 	id := aNumber 
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 LPlayer >> initialize [
 
 	super initialize.
@@ -77,19 +75,19 @@ LPlayer >> initialize [
 	id := 0
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 LPlayer >> name [ 
 
 	^ name 
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 LPlayer >> name: aString [ 
 
 	name := aString 
 ]
 
-{ #category : 'queries' }
+{ #category : #queries }
 LPlayer >> nextItem [
 
 	| card |
@@ -99,31 +97,31 @@ LPlayer >> nextItem [
 	self cards ifEmpty: [ self game finish ]
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 LPlayer >> playerBorderColor [
 
 	^ self gameElement borderForID: self id
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 LPlayer >> playerColor [
 
 	^ self gameElement colorForID: self id
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 LPlayer >> scoreElement [
 
 	^ self gameElement scoreElementForID: self id
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 LPlayer >> tile [ 
 
 	^ tile
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 LPlayer >> tile: aLTile [
 
 	tile := aLTile.

@@ -1,6 +1,6 @@
 Class {
-	#name : 'LGameElement',
-	#superclass : 'BlElement',
+	#name : #LGameElement,
+	#superclass : #BlElement,
 	#instVars : [
 		'game',
 		'boardElement',
@@ -9,36 +9,34 @@ Class {
 		'playerColors',
 		'playerBorderColors'
 	],
-	#category : 'Labyrinth-UI',
-	#package : 'Labyrinth',
-	#tag : 'UI'
+	#category : 'Labyrinth-UI'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 LGameElement >> boardElement [ 
 
 	^ boardElement 
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 LGameElement >> boardElement: aLBoardElement [
 
 	boardElement := aLBoardElement.
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 LGameElement >> borderForID: aPlayerID [ 
 
 	^ self playerBorderColors at: aPlayerID 
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 LGameElement >> colorForID: aPlayerID [
 
 	^ self playerColors at: aPlayerID
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 LGameElement >> finish [
 
 	| finishScreen finishText |
@@ -61,20 +59,20 @@ LGameElement >> finish [
 	self parent addChild: finishScreen
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 LGameElement >> game [ 
 
 	^ game
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 LGameElement >> game: aLGame [
 
 	game := aLGame.
 	aLGame boardElement: self boardElement.
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 LGameElement >> initialize [
 
 	super initialize.
@@ -87,14 +85,14 @@ LGameElement >> initialize [
 	self initializePlayerColors.
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 LGameElement >> initializeBoardElement [
 
 	self boardElement: (LBoardElement new board: LBoard new).
 	self addChild: self boardElement
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 LGameElement >> initializePlayerColors [
 
 	playerColors := Dictionary new
@@ -127,7 +125,7 @@ LGameElement >> initializePlayerColors [
 		                yourself
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 LGameElement >> initializeScoreElements [
 
 	| frame |
@@ -156,43 +154,43 @@ LGameElement >> initializeScoreElements [
 	frame addChild: scoreContainerElement
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 LGameElement >> playerBorderColors [ 
 
 	^ playerBorderColors 
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 LGameElement >> playerBorderColors: aDictionary [
 
 	playerBorderColors:= aDictionary 
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 LGameElement >> playerColors [ 
 
 	^ playerColors 
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 LGameElement >> playerColors: aDictionary [
 
 	playerColors := aDictionary 
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 LGameElement >> scoreContainerElement [ 
 
 	^ scoreContainerElement 
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 LGameElement >> scoreElementForID: aPlayerID [ 
 
 	^ self scoreElements ifNotNil: [ :e | e at: aPlayerID ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 LGameElement >> scoreElements [
 
 	^ scoreElements

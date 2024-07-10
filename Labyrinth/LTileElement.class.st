@@ -1,16 +1,14 @@
 Class {
-	#name : 'LTileElement',
-	#superclass : 'BlElement',
+	#name : #LTileElement,
+	#superclass : #BlElement,
 	#instVars : [
 		'tile',
 		'boardPosition'
 	],
-	#category : 'Labyrinth-UI',
-	#package : 'Labyrinth',
-	#tag : 'UI'
+	#category : 'Labyrinth-UI'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 LTileElement class >> CE [
 
 	| w h shape |
@@ -30,7 +28,7 @@ LTileElement class >> CE [
 	^ shape
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 LTileElement class >> CN [
 
 	| form |
@@ -39,7 +37,7 @@ LTileElement class >> CN [
 	^ form asElement
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 LTileElement class >> CS [
 
 	| form |
@@ -47,7 +45,7 @@ LTileElement class >> CS [
 	^ form asElement
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 LTileElement class >> CW [
 
 	| form |
@@ -55,7 +53,7 @@ LTileElement class >> CW [
 	^ form asElement
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 LTileElement class >> SE [
 
 	| form |
@@ -64,7 +62,7 @@ LTileElement class >> SE [
 	^ form asElement
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 LTileElement class >> SN [
 
 	| w h shape |
@@ -83,7 +81,7 @@ LTileElement class >> SN [
 	^ shape
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 LTileElement class >> TE [
 
 	| w h shape |
@@ -106,7 +104,7 @@ LTileElement class >> TE [
 	^ shape
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 LTileElement class >> TN [
 
 	| form |
@@ -115,7 +113,7 @@ LTileElement class >> TN [
 	^ form asElement
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 LTileElement class >> TS [
 
 	| form |
@@ -124,7 +122,7 @@ LTileElement class >> TS [
 	^ form asElement
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 LTileElement class >> TW [
 
 	| form |
@@ -133,31 +131,31 @@ LTileElement class >> TW [
 	^ form asElement
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 LTileElement class >> tile: aLTile [
 
 	^ self new  boardPosition: aLTile position; tile: aLTile
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 LTileElement >> boardPosition [ 
 
 	^ boardPosition
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 LTileElement >> boardPosition: aPoint [
 
 	boardPosition := aPoint
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 LTileElement >> elementForConfig: config [
 
 	^ self class perform: config asSymbol 
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 LTileElement >> initialize [
 
 	super initialize.
@@ -176,20 +174,20 @@ LTileElement >> initialize [
 			other: [  ] ]
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 LTileElement >> resetTransformation [ 
 
 	self transformation: BlElementIdentityTransformation uniqueInstance 
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 LTileElement >> rotateLeft [
 
 	self tile rotateLeft.
 	self updateBackgroundRepresentation
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 LTileElement >> rotateLeftTimes: aNumber [
 
 	aNumber = 0 ifTrue: [ ^ self ].
@@ -197,14 +195,14 @@ LTileElement >> rotateLeftTimes: aNumber [
 	self rotateLeftTimes: aNumber - 1
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 LTileElement >> rotateRight [
 
 	self tile rotateRight.
 	self updateBackgroundRepresentation 
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 LTileElement >> rotateRightTimes: aNumber [
 
 	aNumber = 0 ifTrue: [ ^ self ].
@@ -212,13 +210,13 @@ LTileElement >> rotateRightTimes: aNumber [
 	self rotateRightTimes: aNumber - 1
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 LTileElement >> tile [ 
 
 	^ tile
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 LTileElement >> tile: aLTile [
 
 	tile := aLTile.
@@ -227,7 +225,7 @@ LTileElement >> tile: aLTile [
 	self updateBackgroundRepresentation
 ]
 
-{ #category : 'change reporting' }
+{ #category : #'change reporting' }
 LTileElement >> updateBackgroundRepresentation [
 
 	| form path formElt config |
