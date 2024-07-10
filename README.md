@@ -17,6 +17,14 @@ Metacello new
 	load.
 ```
 
+In order to play, you then have to execute 
+```st
+LGame nbPlayers: n
+```
+
+`n` being the number of players you want to play with going from 2 to 4
+
+
 ## State of the project
 
 The project is currently in a first stable version playable from 2 to 4 local players on the same computer.
