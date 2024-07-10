@@ -161,7 +161,8 @@ LBoardElement >> arrowVertical: directionBoolean at: aNumber toTheEnd: endBoolea
 						          sequentialAnimationForArrow: arrow
 						          number: aNumber
 						          direction: directionBoolean
-						          end: endBoolean) ].
+						          end: endBoolean) ];
+					yourself.
 
 	^ arrow
 ]
@@ -335,11 +336,16 @@ LBoardElement >> initializeBoardWithArrows [
 
 { #category : 'initialization' }
 LBoardElement >> initializeExtraTile [
+	| extraHolder |
+	extraTileElement := (LTileElement tile: board extraTile)
+		position: -50 asPoint; yourself.
+	extraHolder := BlElement new
+		clipChildren: false;
+		size: 0 asPoint;
+		position: 200 @ 450;
+		addChild: extraTileElement.
 
-	extraTileElement := LTileElement tile: board extraTile.
-
-	extraTileElement position: 150 @ 400.
-	self addChild: extraTileElement.
+	self addChild: extraHolder.
 	self initializeRotateButtons.
 ]
 
@@ -355,10 +361,10 @@ LBoardElement >> initializeRotateButtons [
 
 	rotateLeft
 		addEventHandlerOn: BlClickEvent
-		do: [ extraTileElement addAnimation: self rotateLeftAnimation ].
+		do: [ extraTileElement parent addAnimation: self rotateLeftAnimation ].
 	rotateRight
 		addEventHandlerOn: BlClickEvent
-		do: [ extraTileElement addAnimation: self rotateRightAnimation ].
+		do: [ extraTileElement parent addAnimation: self rotateRightAnimation ].
 
 	self buttons: { rotateLeft. rotateRight }.
 
@@ -420,7 +426,8 @@ LBoardElement >> rotateRightAnimation [
 	| anim |
 	anim := (BlTransformAnimation rotate: 90) duration: 0.5 second.
 	anim onFinishedDo: [
-		extraTileElement resetTransformation. extraTileElement rotateRight ].
+		extraTileElement resetTransformation.
+		extraTileElement rotateRight ].
 	^ anim
 ]
 
